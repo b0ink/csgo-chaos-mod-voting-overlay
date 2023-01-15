@@ -1,0 +1,8 @@
+node_modules
+
+## Packaged executable: (npm run build)
+dist/
+archive
+build/
+
+.DS_Store

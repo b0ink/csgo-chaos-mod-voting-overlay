@@ -1,0 +1,58 @@
+{
+    "name": "csgo-chaos-mod-voting",
+    "version": "1.1.0",
+    "description": "Connects your Twitch and YouTube account to your CS:GO server to pull votes and display a voting overlay",
+    "main": "app/main.js",
+    "scripts": {
+        "start": "electron .",
+        "watch": "webpack --config webpack.dev.js --watch",
+        "compile": "webpack --config webpack.common.js",
+        "build": "set \"GENERATE_SOURCEMAP=false\" && npm run compile && electron-builder",
+        "buildonly": "electron-builder"
+    },
+    "keywords": [],
+    "author": "BOINK",
+    "license": "ISC",
+    "dependencies": {
+        "electron-store": "^8.1.0",
+        "rcon-srcds": "^2.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "tmi.js": "^1.8.5",
+        "youtube-chat": "^2.1.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.18.10",
+        "@babel/preset-env": "^7.18.10",
+        "@babel/preset-react": "^7.18.6",
+        "babel-loader": "^8.2.5",
+        "css-loader": "^6.7.1",
+        "css-minimizer-webpack-plugin": "^4.2.2",
+        "electron": "^21.3.0",
+        "electron-builder": "^23.6.0",
+        "mini-css-extract-plugin": "^2.6.1",
+        "style-loader": "^3.3.1",
+        "terser-webpack-plugin": "^5.3.6",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "uglify-js": "^3.17.4"
+    },
+    "build": {
+        "appId": "com.csgochaosmod.app",
+        "productName": "CS:GO Chaos Mod Voting",
+        "target": "NSIS",
+        "icon": "./icon.png",
+        "nsis": {
+            "oneClick": true
+        },
+        "files": [
+            "app/",
+            "build/app.js",
+            "build/app.css",
+            "index.html",
+            "favicon.ico",
+            "icon.png",
+            "!src/"
+        ]
+    }
+}
