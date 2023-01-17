@@ -5,6 +5,7 @@ import OutOfDatePlugin from "./OutOfDatePlugin";
 import Rcon from "./RconForm";
 import ConnectButton from "./ConnectButton";
 import SavePasswordModal from "./SavePasswordModal";
+import PreferenceButton from "./PreferenceButton";
 
 import "../../css/bootstrap.min.css";
 import "../../css/setup.css";
@@ -313,6 +314,7 @@ export default function Setup() {
                 />
             </form>
             <span id="version">v{appVersion}</span>
+            <PreferenceButton/>
         </div>
     );
 }

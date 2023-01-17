@@ -376,3 +376,16 @@ h3 {
     color: #fff;
     border: 2px solid var(--tab-outline);
 }
+
+#pref-button{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: #3a3f58;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+}
+
+#pref-button:hover{
+    color: #525979;
+}

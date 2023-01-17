@@ -1,5 +1,92 @@
 const _this = module.exports;
-const { ipcMain, safeStorage } = require("electron");
+const { ipcMain, safeStorage, app } = require("electron");
+const ElectronPreferences = require("electron-preferences");
+const path = require("path");
+
+_this.preferences = new ElectronPreferences({
+    dataStore: path.resolve(app.getPath("userData"), "preferences.json"),
+    defaults: {
+        connection: {
+            'streamingservice': "twitch",
+        },
+        voting: {
+            'highlightedeffectcolor': "#b14299",
+            'votingstyle': "proportional",
+        },
+    },
+    sections: [
+        {
+            id: "connection",
+            label: "Connection",
+            // icon: 'world',
+            icon: "preferences",
+            // icon: 'dashboard-level',
+            form: {
+                groups: [
+                    {
+                        label: "Connection Details",
+                        fields: [
+                            {
+                                label: "Default streaming service",
+                                key: "streamingservice",
+                                type: "radio",
+                                options: [
+                                    { label: "Twitch", value: "twitch" },
+                                    { label: "YouTube", value: "youtube" },
+                                ],
+                                help: "Which streaming service you want to be selected by default on start",
+                            },
+                            {
+                                label: "Save passwords on connect?",
+                                key: "savepasswords",
+                                type: "radio",
+                                options: [
+                                    { label: "Yes", value: true },
+                                    { label: "No", value: false },
+                                ],
+                                help: 'Note: Selecting no will clear any saved passwords on your next connection.'
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            id: "voting",
+            label: "Voting",
+            icon: "handout",
+            form: {
+                groups: [
+                    {
+                        label: "Voting",
+                        fields: [
+                            {
+                                label: "Voting Style",
+                                key: "votingstyle",
+                                type: "radio",
+                                options: [
+                                    { label: "Proportional", value: "proportional" },
+                                    { label: "Most Voted", value: "mostvoted" },
+                                ],
+                                help: "Determines which effect is picked. Most Voted will pick the highest voted effect. Proportional will randomly pick the effect based off each effect's chance, the more votes the higher the chance.",
+                            },
+                            {
+                                label: "Highlighted effect color",
+                                key: "highlightedeffectcolor",
+                                type: "color",
+                                format: "hex",
+                                default: "#b14299",
+                                help: "The highlight color to indicate which effect was selected (Default: pink)",
+                            },
+                        ],
+                    },
+                    
+                ],
+            },
+        },
+    ],
+});
+
 const Store = require("electron-store");
 const store = new Store();
 
@@ -17,19 +104,18 @@ const GetStoredValue = (key, returnEmptyOnFail = true) => {
 };
 
 const configindex = {
-    "username": "1",
-    "channelname": "2",
-    "twitchpassword": "3",
-    "serverip": "4",
-    "port": "5",
-    "serverpassword": "6",
-    "youtubeChannelID": "11",
+    username: "1",
+    channelname: "2",
+    twitchpassword: "3",
+    serverip: "4",
+    port: "5",
+    serverpassword: "6",
+    youtubeChannelID: "11",
     "remember-choice": "7",
     "always-save-passwords": "8",
     "votingWindow-location": "9",
     "setupWindow-location": "10",
 };
-
 
 _this.GetSavedLogin = function () {
     let config = {

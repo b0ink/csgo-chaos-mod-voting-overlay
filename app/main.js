@@ -1,7 +1,8 @@
 const APP_VERSION = "1.1.0";
 
 const { win, BrowserWindow, app } = require("electron");
-const { SaveWindowLocation, GetWindowLocation } = require("./Controllers/Preferences");
+const Preferences = require("./Controllers/Preferences");
+const { SaveWindowLocation, GetWindowLocation } = Preferences;
 
 const Effects = require("./Controllers/Effects");
 
@@ -111,10 +112,11 @@ ipcMain.handle("Window_SetSetupSize", (event, streamingService) => {
 });
 
 ipcMain.handle("Version_GetAppVersion", () => APP_VERSION);
+
 ipcMain.handle("Window_OpenChaosDownload", () => shell.openExternal("https://csgochaosmod.com"));
 ipcMain.handle("Window_OpenTmiOauth", () => shell.openExternal("https://twitchapps.com/tmi"));
-ipcMain.handle("Window_OpenVotingWindow", async (event, data) => createVotingWindow());
-ipcMain.handle("Window_CloseVotingWindow", async (event, data) => votingWindow.close());
+ipcMain.handle("Window_OpenVotingWindow", () => createVotingWindow());
+ipcMain.handle("Window_CloseVotingWindow", () => votingWindow.close());
 
 app.whenReady().then(createSetupWindow);
 
