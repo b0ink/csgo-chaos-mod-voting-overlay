@@ -65,26 +65,31 @@ export default function Setup() {
     }, []);
 
     const HideModal = () => setPromptingSavePass(false);
-    const SaveDetails = (allowSave, rememberChoice) => {
-        window.electron.PreferencesAPI.SaveDetails({
-            username,
-            channelname,
-            twitchpassword,
+    const SaveDetails = (allowSave) => {
+        window.electron.PreferencesAPI.SetValue({
+            //TODO: semi-redundant save
+            key: 'connection.savepasswords',
+            value: allowSave
+        }).then(()=> {
+            return window.electron.PreferencesAPI.SaveDetails({
+                username,
+                channelname,
+                twitchpassword,
 
-            serverip,
-            port,
-            serverpassword,
+                serverip,
+                port,
+                serverpassword,
 
-            allowSave,
-            rememberChoice,
-            youtubeChannelID,
-        });
-        if(rememberChoice){
+                youtubeChannelID,
+            });
+        })
+        .then(() => {
             window.electron.PreferencesAPI.SetValue({
-                key: 'connection.savepasswords',
-                value: allowSave
-            })
-        }
+                key: 'connection.isFirstTimeConnection', value: false
+            });
+            console.log('set to false');
+        })
+
         HideModal();
     };
 
@@ -139,8 +144,8 @@ export default function Setup() {
                                 setPromptingSavePass(true);
                             }, 1000);
                         } else {
-                            // choice was remembered to save passwords ->
-                            SaveDetails(alwaysSavePass, true);
+                            // not the first connection, skip prompt and save details
+                            SaveDetails(alwaysSavePass);
                         }
 
                         window.electron.RconAPI.GetServersChaosVersion().then((data) => {
@@ -184,18 +189,23 @@ export default function Setup() {
             setAppVersion(data);
         });
 
-        window.electron.PreferencesAPI.GetDetails().then((data) => {
-            // setLoginDetails(data);
+        window.electron.PreferencesAPI.GetDetails()
+        .then((data) => {
             setUsername(data.username);
             setChannelname(data.channelname);
             setTwitchPassword(data.twitchpassword);
             setServerIP(data.serverip);
             setPort(data.port);
             setServerPassword(data.serverpassword);
-            setShouldPromptSavePass(!data.rememberChoice);
-            setAlwaysSavePass(data.allowSave);
             setYoutubeChannelID(data.youtubeChannelID);
-        });
+            return window.electron.PreferencesAPI.GetValue('connection.isFirstTimeConnection');
+        }).then(data => {
+            setShouldPromptSavePass(data);
+            console.log('setting showing prompt to ', data)
+            return window.electron.PreferencesAPI.GetValue('connection.savepasswords');
+        }).then(data => {
+            setAlwaysSavePass(data);
+        })
     }, []);
 
     const usernameOnChange = (event) => setUsername(event.target.value);

@@ -8,6 +8,8 @@ _this.preferences = new ElectronPreferences({
     defaults: {
         connection: {
             'streamingservice': "Twitch",
+            'savepasswords': false,
+            'isFirstTimeConnection': true
         },
         voting: {
             'highlightedeffectcolor': "#b14299",
@@ -46,6 +48,16 @@ _this.preferences = new ElectronPreferences({
                                 ],
                                 help: 'Note: Selecting no will clear any saved passwords on your next connection.'
                             },
+                            {
+                                label: 'first time connection',
+                                key: "isFirstTimeConnection",
+                                type: 'radio',
+                                options: [
+                                    {label:'true',value:true},
+                                    {label:'false',value:false},
+                                ],
+                                hideFunction: () => true
+                            }
                         ],
                     },
                 ],
@@ -111,7 +123,7 @@ const configindex = {
     port: "5",
     serverpassword: "6",
     youtubeChannelID: "11",
-    "remember-choice": "7",
+    "firstTimeConnection": "7",
     "always-save-passwords": "8",
     "votingWindow-location": "9",
     "setupWindow-location": "10",
@@ -126,18 +138,17 @@ _this.GetSavedLogin = function () {
         port: GetStoredValue("port"),
         serverpassword: GetStoredValue("serverpassword"),
         youtubeChannelID: GetStoredValue("youtubeChannelID"),
-        rememberChoice: GetStoredValue("remember-choice", false),
-        allowSave: GetStoredValue("always-save-passwords", false),
+        allowSave: _this.preferences.value('connection.savepasswords'),
     };
     return config;
 };
 
-_this.SaveLogin = function (data, savePasswords = true, rememberChoice = false) {
+_this.SaveLogin = function (data, savePasswords = true) {
     if (data.username) store.set(configindex["username"], JSON.stringify(safeStorage.encryptString(data.username)));
     if (data.channelname) store.set(configindex["channelname"], JSON.stringify(safeStorage.encryptString(data.channelname)));
     if (data.serverip) store.set(configindex["serverip"], JSON.stringify(safeStorage.encryptString(data.serverip)));
     if (data.port) store.set(configindex["port"], JSON.stringify(safeStorage.encryptString(data.port)));
-    if (savePasswords) {
+    if (_this.preferences.value('connection.savepasswords')) {
         if (data.youtubeChannelID) store.set(configindex["youtubeChannelID"], JSON.stringify(safeStorage.encryptString(data.youtubeChannelID)));
         if (data.twitchpassword) store.set(configindex["twitchpassword"], JSON.stringify(safeStorage.encryptString(data.twitchpassword)));
         if (data.serverpassword) store.set(configindex["serverpassword"], JSON.stringify(safeStorage.encryptString(data.serverpassword)));
@@ -146,8 +157,10 @@ _this.SaveLogin = function (data, savePasswords = true, rememberChoice = false) 
         store.set(configindex["twitchpassword"], "");
         store.set(configindex["serverpassword"], "");
     }
-    store.set(configindex["always-save-passwords"], savePasswords);
-    store.set(configindex["remember-choice"], rememberChoice);
+
+    // if(savePasswords){
+    //     _this.preferences.value('connection.savepasswords', true);
+    // }
 };
 
 _this.GetWindowLocation = (windowName) => {
@@ -165,12 +178,6 @@ _this.GetWindowLocation = (windowName) => {
 _this.SaveWindowLocation = (windowName, x, y) => {
     store.set(configindex[`${windowName}-location`], `${x} ${y}`);
 };
-
-_this.preferences.on('save', data => {
-    if(data.connection.savePasswords){
-        _this.SaveLogin(null, true, true);
-    }
-})
 
 
 /* REMOTES */
