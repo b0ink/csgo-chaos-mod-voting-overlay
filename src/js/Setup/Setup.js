@@ -87,7 +87,6 @@ export default function Setup() {
             window.electron.PreferencesAPI.SetValue({
                 key: 'connection.isFirstTimeConnection', value: false
             });
-            console.log('set to false');
         })
 
         HideModal();
@@ -201,7 +200,6 @@ export default function Setup() {
             return window.electron.PreferencesAPI.GetValue('connection.isFirstTimeConnection');
         }).then(data => {
             setShouldPromptSavePass(data);
-            console.log('setting showing prompt to ', data)
             return window.electron.PreferencesAPI.GetValue('connection.savepasswords');
         }).then(data => {
             setAlwaysSavePass(data);
