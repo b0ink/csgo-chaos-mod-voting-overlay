@@ -12,10 +12,10 @@ OR
 - You can use `npm run watch` in a separate terminal to automatically compile the app on every save, you can then run `npm start` to start the app every time.
 
 ### Usage
-- Enter your Twitch or YouTube details and then Servers connection details
-- Ensure that your server's launch options uses the `-usercon` paramater to allow RCON connections.
+- Ensure that your CS:GO server's launch options uses the `-usercon` paramater to allow RCON connections.
 - You can type `status` while on the csgo server to get the ip and port.
 - The server's RCON password is either defined in your `server.cfg` or as a launch option parameter.
+- Enter your Twitch or YouTube details and then your Servers connection details, and press Connect.
 - If both connections are successful, two green ticks will be displayed and the `Open Voting` button will appear, clicking that will bring up the overlay.
   
 <p align="center">
