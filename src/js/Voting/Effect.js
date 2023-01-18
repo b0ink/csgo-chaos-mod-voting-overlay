@@ -11,14 +11,14 @@ export default function Effect(props) {
     };
 
     if (!props.canVote) {
-        style["background-color"] = "#474747";
+        style["backgroundColor"] = "#474747";
         effectClass += " greyed-out";
     }
 
     /* If this == selected effect, highlight background */
     if (props.effect && props.highlightLastEffect) {
         if (props.lastEffect == props.effect.function || (props.isRandomEffect && props.index == 4)) {
-            style["background-color"] = "var(--winning-effect-color)";
+            style["backgroundColor"] = "var(--winning-effect-color)";
             effectClass += " highlight";
         } else {
             effectClass += " non-highlight";

@@ -37,7 +37,6 @@ _this.ConnectToTwitch = async (event, details) => {
 
         _this.TwitchClient.connect()
             .then((data) => {
-                console.log(data);
                 if (!data) throw "Could not connect to twitch.";
                 if (timeout) {
                     resolve({
@@ -62,6 +61,15 @@ _this.ConnectToTwitch = async (event, details) => {
 _this.IsTwitchConnected = () => {
     return _this.TwitchClient && _this.TwitchClient.readyState() == "OPEN";
 };
+
+_this.CloseConnection = () => {
+    try{
+        _this.TwitchClient.disconnect();
+        _this.TwitchClient = null;
+    }catch(e){
+        console.log(e);
+    }
+}
 
 /* REMOTES */
 

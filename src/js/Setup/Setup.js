@@ -62,6 +62,43 @@ export default function Setup() {
             setStreamingService(service);
             window.electron.WindowAPI.SetWindowSize(service);
         })
+
+
+        setInterval(() => {
+            if(isRconConnected){
+                window.electron.RconAPI.IsConnected().then(data => {
+                    if(!data){
+                        console.log("TURNING OFF RCON")
+                        setRconConnected(false);
+                        setRconError(true);
+                        setRconLoading(false);
+                    }
+                })
+            }
+
+            if(isTwitchConnected){
+                window.electron.TwitchAPI.IsConnected().then(data => {
+                    if(!data){
+                        console.log("TURNING OFF TWITCH")
+                        setTwitchConnected(false);
+                        setTwitchError(true);
+                        setTwitchLoading(false);
+                    }
+                })
+            }
+
+            if(isYoutubeConnected){
+                window.electron.YoutubeAPI.IsConnected().then(data => {
+                    if(!data){
+                        console.log("TURNING OFF YOUTUBE")
+                        setYoutubeConnected(false);
+                        setYoutubeError(true);
+                        setYoutubeLoading(false);
+                    }
+                })
+            }
+
+        }, 1000)
     }, []);
 
     const HideModal = () => setPromptingSavePass(false);
@@ -244,7 +281,6 @@ export default function Setup() {
         }
 
         config = data;
-        console.log(streamingService);
         if (streamingService == "YouTube") {
             setYoutubeLoading(true);
             ConnectToYoutube(data);

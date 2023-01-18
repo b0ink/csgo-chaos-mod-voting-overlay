@@ -10,6 +10,10 @@ const { shell } = require("electron/common");
 const { ipcMain } = require("electron/main");
 const path = require("path");
 
+const Rcon = require('./Controllers/Rcon');
+const Twitch = require('./Controllers/Twitch');
+const YouTube = require('./Controllers/Youtube');
+
 const isDev = !app.isPackaged;
 
 const setupWindowSize = {
@@ -38,7 +42,7 @@ let windowOptions = {
 var setupWindow;
 var votingWindow;
 
-// Open setup window
+/* Open setup connection window */
 const createSetupWindow = () => {
     const { x, y } = GetWindowLocation("setupWindow");
 
@@ -48,7 +52,7 @@ const createSetupWindow = () => {
         x,
         y,
         ...windowOptions,
-        title: "CS:GO Chaos Mod Setup",
+        title: "CS:GO Chaos Mod Connection Setup",
     });
     setupWindow.loadFile("index.html", {
         query: {
@@ -66,7 +70,7 @@ const createSetupWindow = () => {
     });
 };
 
-// Open voting window
+/* Open voting window */
 const createVotingWindow = () => {
     const { x, y } = GetWindowLocation("votingWindow");
 
@@ -94,9 +98,27 @@ const createVotingWindow = () => {
         Effects.VotingWindowOpen = false;
         try {
             SaveWindowLocation("votingWindow", votingWindow.getPosition()[0], votingWindow.getPosition()[1]);
-        } catch (e) {}
+        } catch (e) {
+            console.log(e);
+        }
     });
 };
+
+setInterval(()=> {
+    if(Rcon.FailedConnections >= 10){
+        if(votingWindow){
+            console.log("CLOSING ALL CONNECTIONS");
+            votingWindow.close();
+            votingWindow = false;
+            Rcon.CloseConnection();
+            Twitch.CloseConnection();
+            YouTube.CloseConnection();
+            //TODO: 
+        }
+    }
+    
+}, 1000);
+
 
 /* REMOTES */
 

@@ -25,27 +25,38 @@ let disableVoteTimer = null;
 let delayEffectTimer = null;
 
 setInterval(() => {
-    if (!Rcon.IsRconConnected()) return;
+    if (!Rcon.IsRconConnected()) {
+        ResetVoting();
+        return;
+    };
     if (!_this.VotingWindowOpen) return;
     GetServerData();
 }, 1000);
+
+const ResetVoting = () => {
+    _this.HideEffectList = true;
+    _this.Effects = [];
+    _this.HighlightWinningEffect = false;
+    clearTimeout(finalCheckTimer);
+    clearTimeout(disableVoteTimer);
+    clearTimeout(delayEffectTimer);
+}
 
 const GetServerData = async () => {
     await Rcon.GetEffectData(GetWinningEffect())
         .then((data) => {
             data = ParseServerData(data);
+            if(!data || !data.lastPlayedEffect){
+                ResetVoting();
+                return;
+            }
             data.LastPlayedEffect = data.lastPlayedEffect;
             if (data.newEffectTime != _this.NextEffectTime) {
                 /* New set of effects */
 
                 let effects = data.effects;
                 if (!effects || !Array.isArray(effects) || data.newEffectTime <= 0) {
-                    _this.HideEffectList = true;
-                    _this.Effects = [];
-                    _this.HighlightWinningEffect = false;
-                    clearTimeout(finalCheckTimer);
-                    clearTimeout(disableVoteTimer);
-                    clearTimeout(delayEffectTimer);
+                    ResetVoting;
                     return;
                 } else {
                     delayEffectTimer = setTimeout(() => {
@@ -77,6 +88,8 @@ const GetServerData = async () => {
         })
         .catch((e) => {
             //TODO: handle failed attempts
+            ResetVoting();
+            console.log(e)
         });
 };
 
@@ -98,7 +111,6 @@ const GetWinningEffect = () => {
         });
         let totalVotes = 0;
         for (let effect of sortedEffects) {
-            console.log(effect.votes);
             totalVotes += effect.votes;
         }
         if (sortedEffects.length < 4) {

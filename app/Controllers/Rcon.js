@@ -18,11 +18,13 @@ let config = {
 };
 
 _this.RconServer = new Rcon(config);
+_this.FailedConnections = 0;
+_this.TryingConnection = false;
 
 _this.ConnectToRcon = async (details) => {
     return new Promise((resolve, reject) => {
         _this.RconServer = new Rcon(config);
-
+        _this.TryingConnection = true;
         /* Fill in details */
         if (details) {
             config.host = details.serverip;
@@ -37,6 +39,7 @@ _this.ConnectToRcon = async (details) => {
 
         /* Manual timeout in case the connection hangs forever */
         let timeout = setTimeout(() => {
+            _this.TryingConnection = false;
             reject("Authentication timed out");
         }, 5000);
 
@@ -45,23 +48,30 @@ _this.ConnectToRcon = async (details) => {
             _this.RconServer.authenticate(details ? details.serverpassword : config.serverpassword)
                 .then((data) => {
                     if (timeout) {
+                        _this.FailedConnections = 0;
+                        _this.TryingConnection = false;
                         resolve({
                             server: _this.RconServer,
                             success: true,
                             response: data,
                         });
                     } else {
+                        _this.TryingConnection = false;
                         reject("Authentication timed out");
                     }
                 })
                 .catch((e) => {
+                    _this.TryingConnection = false;
+                    _this.FailedConnections++;
                     reject("Could not authenticate:", e);
                 })
                 .finally(() => {
+                    _this.TryingConnection = false;
                     clearTimeout(timeout);
                     timeout = null;
                 });
         } catch (e) {
+            _this.TryingConnection = false;
             console.log(e);
             reject("Unable to connect to rcon.");
         }
@@ -80,17 +90,37 @@ _this.GetEffectData = async (votedEffect) => {
             }
             _this.RconServer.execute(`chaos_votes ${votedEffect}`)
                 .then((data) => {
-                    // _this.FailedAttempts = 0;
+                    _this.FailedConnections = 0;
                     resolve(data);
                 })
                 .catch((e) => {
-                    reject(e);
+                    reject("Error in getting chaos votes connections status: " + _this.IsRconConnected());
+                    // if(!_this.IsRconConnected()){
+                    _this.FailedConnections++;
+                    if(!_this.TryingConnection){
+                        if(_this.FailedConnections < 10){
+                            console.log("Reconnecting to rcon.");
+                            _this.ConnectToRcon();
+                        }else{
+                            console.log("Exceeded max failed connections of (10)");
+                        }
+                    }
                 });
         } catch (e) {
             reject("Failed to execute command.");
         }
     });
 };
+
+
+_this.CloseConnection = () => {
+    try{
+        _this.RconServer.disconnect();
+        _this.RconServer = nu
+    }catch(e){
+        console.log(e);
+    }
+}
 
 /* REMOTES */
 
