@@ -19,6 +19,7 @@ import { useState } from "react";
 
 export default function Setup() {
     let config;
+     
 
     const [streamingService, setStreamingService] = useState("Twitch");
 
@@ -52,6 +53,17 @@ export default function Setup() {
 
     const [appVersion, setAppVersion] = useState("");
 
+    useEffect(() => {
+        window.electron.PreferencesAPI.GetValue('connection.streamingservice')
+        .then((service) => {
+            if(service !== "Twitch" && service !== "YouTube"){
+                service = "Twitch";
+            }
+            setStreamingService(service);
+            window.electron.WindowAPI.SetWindowSize(service);
+        })
+    }, []);
+
     const HideModal = () => setPromptingSavePass(false);
     const SaveDetails = (allowSave, rememberChoice) => {
         window.electron.PreferencesAPI.SaveDetails({
@@ -67,6 +79,12 @@ export default function Setup() {
             rememberChoice,
             youtubeChannelID,
         });
+        if(rememberChoice){
+            window.electron.PreferencesAPI.SetValue({
+                key: 'connection.savepasswords',
+                value: allowSave
+            })
+        }
         HideModal();
     };
 
@@ -151,6 +169,7 @@ export default function Setup() {
     };
 
     useMemo(() => {
+        
         fetch("https://csgochaosmod.com/version.php")
             .then((res) => {
                 return res.json();

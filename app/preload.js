@@ -27,6 +27,8 @@ contextBridge.exposeInMainWorld("electron", {
     PreferencesAPI: {
         GetDetails: () => ipcRenderer.invoke("Preferences_GetDetails"),
         SaveDetails: (data) => ipcRenderer.invoke("Preferences_SaveDetails", data),
+        GetValue: (data) => ipcRenderer.invoke("Preferences_GetValue", data),
+        SetValue: (data) => ipcRenderer.invoke("Preferences_SetValue", data),
     },
     WindowAPI: {
         OpenChaosDownload: () => ipcRenderer.invoke("Window_OpenChaosDownload"),

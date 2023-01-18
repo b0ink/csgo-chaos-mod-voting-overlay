@@ -7,7 +7,7 @@ _this.preferences = new ElectronPreferences({
     dataStore: path.resolve(app.getPath("userData"), "preferences.json"),
     defaults: {
         connection: {
-            'streamingservice': "twitch",
+            'streamingservice': "Twitch",
         },
         voting: {
             'highlightedeffectcolor': "#b14299",
@@ -31,8 +31,8 @@ _this.preferences = new ElectronPreferences({
                                 key: "streamingservice",
                                 type: "radio",
                                 options: [
-                                    { label: "Twitch", value: "twitch" },
-                                    { label: "YouTube", value: "youtube" },
+                                    { label: "Twitch", value: "Twitch" },
+                                    { label: "YouTube", value: "YouTube" },
                                 ],
                                 help: "Which streaming service you want to be selected by default on start",
                             },
@@ -76,7 +76,7 @@ _this.preferences = new ElectronPreferences({
                                 type: "color",
                                 format: "hex",
                                 default: "#b14299",
-                                help: "The highlight color to indicate which effect was selected (Default: pink)",
+                                help: "The highlight color to indicate which effect was selected (Default: #b14299)",
                             },
                         ],
                     },
@@ -166,6 +166,13 @@ _this.SaveWindowLocation = (windowName, x, y) => {
     store.set(configindex[`${windowName}-location`], `${x} ${y}`);
 };
 
+_this.preferences.on('save', data => {
+    if(data.connection.savePasswords){
+        _this.SaveLogin(null, true, true);
+    }
+})
+
+
 /* REMOTES */
 
 ipcMain.handle("Preferences_SaveDetails", async (event, data) => {
@@ -174,4 +181,16 @@ ipcMain.handle("Preferences_SaveDetails", async (event, data) => {
 
 ipcMain.handle("Preferences_GetDetails", async (event, data) => {
     return _this.GetSavedLogin();
+});
+
+ipcMain.handle("Preferences_GetValue", async (event, data) => {
+    return _this.preferences.value(data);
+});
+
+ipcMain.handle("Preferences_SetValue", async (event, data) => {
+    try{
+        _this.preferences.value(data.key, data.value);
+    }catch(e){
+        console.log(e);
+    }
 });

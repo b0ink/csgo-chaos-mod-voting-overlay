@@ -15,6 +15,13 @@ export default function Voting(props) {
     const [isRandomEffect, setIsRandomEffect] = useState(false);
 
     useEffect(() => {
+        window.electron.PreferencesAPI.GetValue('voting.highlightedeffectcolor')
+            .then((data) => {
+                //TODO: check if this updates often
+                const root = document.querySelector(':root');
+                root.style.setProperty('--winning-effect-color', data);
+            });
+
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
         setInterval(countTotalVotes, 100);
         setInterval(GetEffectList, 100);

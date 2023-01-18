@@ -4,6 +4,7 @@ const { ipcMain } = require("electron/main");
 const _this = module.exports;
 
 const Chat = require("./Chat");
+const Preferences = require('./Preferences');
 
 _this.VotingWindowOpen = false;
 _this.LastPlayedEffect = "";
@@ -17,6 +18,7 @@ _this.ProportionalVoting = true;
 const Rcon = require("./Rcon");
 const Twitch = require("./Twitch");
 const Youtube = require("./Youtube");
+
 
 let finalCheckTimer = null;
 let disableVoteTimer = null;
@@ -136,6 +138,19 @@ const GetWinningEffect = () => {
         return fctn ? fctn : "RANDOM";
     }
 };
+
+
+Preferences.preferences.on('save', (data) => {
+    try{
+        if(data.voting.votingstyle == "mostvoted"){
+            _this.ProportionalVoting = false;
+        }else{
+            _this.ProportionalVoting = true;
+        }
+    }catch(e){
+        _this.ProportionalVoting = true;
+    }
+})
 
 /* REMOTES */
 
