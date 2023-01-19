@@ -1,3 +1,8 @@
+:root{
+    --chromakey: #00ff00;
+    --effectbar: #323d41;
+    --percentageBar: #33587a;
+}
 #greenscreen {
     position: absolute;
     left: 0;
@@ -5,7 +10,7 @@
     width: 100vw;
     height: 100vh;
 
-    background-color: #00ff00;
+    background-color: var(--chromakey);
     z-index: -1;
 }
 #voting-panel {
@@ -26,7 +31,7 @@
     font-weight: 700;
     color: #000;
     color: #fff;
-    background-color: #323d41;
+    background-color: var(--effectbar);
     margin-bottom: 7px;
     font-size: 14px;
     display: flex;
@@ -35,7 +40,7 @@
     padding: 0 15px;
 }
 #loadingbar {
-    background-color: #33587a;
+    background-color: var(--percentageBar);
     height: 35px;
     position: absolute;
     z-index: 0;

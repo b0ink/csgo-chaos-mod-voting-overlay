@@ -168,7 +168,7 @@ const GetWinningEffect = () => {
 
 Preferences.preferences.on("save", (data) => {
     try {
-        if (data.voting.votingstyle == "mostvoted") {
+        if (data.voting.votingStyle == "mostvoted") {
             _this.ProportionalVoting = false;
         } else {
             _this.ProportionalVoting = true;

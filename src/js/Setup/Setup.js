@@ -53,7 +53,7 @@ export default function Setup() {
     const [appVersion, setAppVersion] = useState("");
 
     useEffect(() => {
-        window.electron.PreferencesAPI.GetValue("connection.streamingservice").then((service) => {
+        window.electron.PreferencesAPI.GetValue("connection.streamingService").then((service) => {
             if (service !== "Twitch" && service !== "YouTube") {
                 service = "Twitch";
             }
@@ -101,7 +101,7 @@ export default function Setup() {
     const SaveDetails = (allowSave) => {
         window.electron.PreferencesAPI.SetValue({
             //TODO: semi-redundant save
-            key: "connection.savepasswords",
+            key: "connection.savePasswords",
             value: allowSave,
         })
             .then(() => {
@@ -235,7 +235,7 @@ export default function Setup() {
             })
             .then((data) => {
                 setShouldPromptSavePass(data);
-                return window.electron.PreferencesAPI.GetValue("connection.savepasswords");
+                return window.electron.PreferencesAPI.GetValue("connection.savePasswords");
             })
             .then((data) => {
                 setAlwaysSavePass(data);

@@ -1,5 +1,5 @@
 const _this = module.exports;
-const { ipcMain, safeStorage, app } = require("electron");
+const { ipcMain, ipcRenderer,safeStorage, app } = require("electron");
 const ElectronPreferences = require("electron-preferences");
 const path = require("path");
 
@@ -7,14 +7,17 @@ _this.preferences = new ElectronPreferences({
     dataStore: path.resolve(app.getPath("userData"), "preferences.json"),
     defaults: {
         connection: {
-            streamingservice: "Twitch",
-            savepasswords: false,
+            streamingService: "Twitch",
+            savePasswords: false,
             isFirstTimeConnection: true,
         },
         voting: {
-            highlightedeffectcolor: "#b14299",
-            votingstyle: "proportional",
-            alwaysOnTop: true
+            highlightedEffectColor: "#b14299",
+            votingStyle: "proportional",
+            alwaysOnTop: true,
+            chromaKeyBackground: '#00ff00',
+            defaultEffectBar: '#323d41',
+            percentageBar: '#33587a'
         },
     },
     sections: [
@@ -30,8 +33,8 @@ _this.preferences = new ElectronPreferences({
                         label: "Connection Details",
                         fields: [
                             {
-                                label: "Default streaming service",
-                                key: "streamingservice",
+                                label: "Default Streaming Service",
+                                key: "streamingService",
                                 type: "radio",
                                 options: [
                                     { label: "Twitch", value: "Twitch" },
@@ -40,8 +43,8 @@ _this.preferences = new ElectronPreferences({
                                 help: "Which streaming service you want to be selected by default on start",
                             },
                             {
-                                label: "Save passwords on connect?",
-                                key: "savepasswords",
+                                label: "Remember Passwords?",
+                                key: "savePasswords",
                                 type: "radio",
                                 options: [
                                     { label: "Yes", value: true },
@@ -50,7 +53,7 @@ _this.preferences = new ElectronPreferences({
                                 help: "Note: Selecting no will clear any saved passwords on your next connection.",
                             },
                             {
-                                label: "first time connection",
+                                label: "First Time Connection",
                                 key: "isFirstTimeConnection",
                                 type: "radio",
                                 options: [
@@ -75,7 +78,7 @@ _this.preferences = new ElectronPreferences({
                         fields: [
                             {
                                 label: "Voting Style",
-                                key: "votingstyle",
+                                key: "votingStyle",
                                 type: "radio",
                                 options: [
                                     { label: "Proportional", value: "proportional" },
@@ -84,23 +87,48 @@ _this.preferences = new ElectronPreferences({
                                 help: "Determines which effect is picked. Most Voted will pick the highest voted effect. Proportional will randomly pick the effect based off each effect's chance, the more votes the higher the chance.",
                             },
                             {
-                                label: "Highlighted effect color",
-                                key: "highlightedeffectcolor",
+                                label: "Chroma Key Background Color",
+                                key: "chromaKeyBackground",
                                 type: "color",
                                 format: "hex",
-                                default: "#b14299",
-                                help: "The highlight color to indicate which effect was selected (Default: #b14299)",
                             },
                             {
-                                label: "Keep voting window always on top",
+                                label: "Default Effect Bar Color",
+                                key: "defaultEffectBar",
+                                type: "color",
+                                format: "hex",
+                                help: 'Background color of the effect row.'
+                            },
+                            {
+                                label: "Percentage Bar Color",
+                                key: "percentageBar",
+                                type: "color",
+                                format: "hex",
+                                help: "Background color of the bar that depicts the amount of votes the effect has (as a percentage)."
+                            },
+                            {
+                                label: "Highlighted Effect Color",
+                                key: "highlightedEffectColor",
+                                type: "color",
+                                format: "hex",
+                                help: "The highlight color to indicate which effect was selected.",
+                            },
+                            {
+                                label: "Keep Voting Window Always On Top",
                                 key: "alwaysOnTop",
                                 type: "radio",
                                 options: [
                                     {label: "Yes", value: true},
                                     {label: "No", value: false},
                                 ],
-                                help: "Selecting yes will force the voting overlay to always stay on top of other windows",
+                                help: "Selecting yes will force the voting overlay to always stay on top of other windows.",
                             },
+                            {
+                                key: 'resetVotingDefaults',
+                                type: "button",
+                                buttonLabel: 'Reset Defaults',
+                                help: 'Note: Re-open the preferences window to update.'
+                            }
                         ],
                     },
                 ],
@@ -109,6 +137,15 @@ _this.preferences = new ElectronPreferences({
     ],
 });
 
+
+_this.preferences.on('click', (key) => {
+    if (key === 'resetVotingDefaults') {
+        for(let obj in _this.preferences.defaults.voting){
+            _this.preferences.value(`voting.${obj}`, _this.preferences.defaults.voting[obj])
+        }
+    }
+});
+  
 const Store = require("electron-store");
 const store = new Store();
 
@@ -148,7 +185,7 @@ _this.GetSavedLogin = function () {
         port: GetStoredValue("port"),
         serverpassword: GetStoredValue("serverpassword"),
         youtubeChannelID: GetStoredValue("youtubeChannelID"),
-        allowSave: _this.preferences.value("connection.savepasswords"),
+        allowSave: _this.preferences.value("connection.savePasswords"),
     };
     return config;
 };
@@ -158,7 +195,7 @@ _this.SaveLogin = function (data, savePasswords = true) {
     if (data.channelname) store.set(configindex["channelname"], JSON.stringify(safeStorage.encryptString(data.channelname)));
     if (data.serverip) store.set(configindex["serverip"], JSON.stringify(safeStorage.encryptString(data.serverip)));
     if (data.port) store.set(configindex["port"], JSON.stringify(safeStorage.encryptString(data.port)));
-    if (_this.preferences.value("connection.savepasswords")) {
+    if (_this.preferences.value("connection.savePasswords")) {
         if (data.youtubeChannelID) store.set(configindex["youtubeChannelID"], JSON.stringify(safeStorage.encryptString(data.youtubeChannelID)));
         if (data.twitchpassword) store.set(configindex["twitchpassword"], JSON.stringify(safeStorage.encryptString(data.twitchpassword)));
         if (data.serverpassword) store.set(configindex["serverpassword"], JSON.stringify(safeStorage.encryptString(data.serverpassword)));
@@ -169,7 +206,7 @@ _this.SaveLogin = function (data, savePasswords = true) {
     }
 
     // if(savePasswords){
-    //     _this.preferences.value('connection.savepasswords', true);
+    //     _this.preferences.value('connection.savePasswords', true);
     // }
 };
 

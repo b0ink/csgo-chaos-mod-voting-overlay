@@ -15,12 +15,25 @@ export default function Voting(props) {
     const [isRandomEffect, setIsRandomEffect] = useState(false);
 
     useEffect(() => {
-        window.electron.PreferencesAPI.GetValue('voting.highlightedeffectcolor')
-            .then((data) => {
+        const root = document.querySelector(':root');
+        window.electron.PreferencesAPI.GetValue('voting.highlightedEffectColor')
+            .then(data => {
                 //TODO: check if this updates often
-                const root = document.querySelector(':root');
                 root.style.setProperty('--winning-effect-color', data);
-            });
+                return window.electron.PreferencesAPI.GetValue('voting.chromaKeyBackground');
+            })
+            .then(data =>{
+                root.style.setProperty('--chromakey', data);
+                return window.electron.PreferencesAPI.GetValue('voting.defaultEffectBar');
+            })
+            .then(data =>{
+                root.style.setProperty('--effectbar', data);
+                return window.electron.PreferencesAPI.GetValue('voting.percentageBar');
+            })
+            .then(data =>{
+                root.style.setProperty('--percentageBar', data);
+                return window.electron.PreferencesAPI.GetValue('voting.percentageBar');
+            })
 
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
         setInterval(GetEffectList, 100);
