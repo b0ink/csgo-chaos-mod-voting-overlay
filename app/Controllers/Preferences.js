@@ -17,7 +17,8 @@ _this.preferences = new ElectronPreferences({
             alwaysOnTop: true,
             chromaKeyBackground: '#00ff00',
             defaultEffectBar: '#323d41',
-            percentageBar: '#33587a'
+            percentageBar: '#33587a',
+            effectTextColor: '#fff'
         },
     },
     sections: [
@@ -112,6 +113,13 @@ _this.preferences = new ElectronPreferences({
                                 type: "color",
                                 format: "hex",
                                 help: "The highlight color to indicate which effect was selected.",
+                            },
+                            {
+                                label: "Effect Text Color",
+                                key: "effectTextColor",
+                                type: "color",
+                                format: "hex",
+                                help: "Text color for the overlay.",
                             },
                             {
                                 label: "Keep Voting Window Always On Top",

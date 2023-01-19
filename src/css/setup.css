@@ -161,6 +161,7 @@ h3 {
     border-radius: 35px;
     transition: all ease-in-out 200ms;
     position: relative;
+    user-select: none;
 }
 #open-overlay {
     border: 2px solid var(--open-overlay-button);

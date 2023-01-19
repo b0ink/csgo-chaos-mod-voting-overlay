@@ -32,7 +32,10 @@ export default function Voting(props) {
             })
             .then(data =>{
                 root.style.setProperty('--percentageBar', data);
-                return window.electron.PreferencesAPI.GetValue('voting.percentageBar');
+                return window.electron.PreferencesAPI.GetValue('voting.effectTextColor');
+            })
+            .then(data =>{
+                root.style.setProperty('--effecttextcolor', data);
             })
 
         //TODO: test to see if the order of these matter - separated to prevent infinite renders

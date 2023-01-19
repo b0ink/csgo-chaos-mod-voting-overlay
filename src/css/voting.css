@@ -2,6 +2,7 @@
     --chromakey: #00ff00;
     --effectbar: #323d41;
     --percentageBar: #33587a;
+    --effecttextcolor: #fff;
 }
 #greenscreen {
     position: absolute;
@@ -30,7 +31,7 @@
     min-height: 35px;
     font-weight: 700;
     color: #000;
-    color: #fff;
+    color: var(--effecttextcolor);
     background-color: var(--effectbar);
     margin-bottom: 7px;
     font-size: 14px;
@@ -52,7 +53,7 @@
 .effect.highlight {
     /* background-color: #33587a; */
     background-color: var(--winning-effect-color);
-    color: #fff;
+    color: var(--effecttextcolor);
     font-size: 18px;
     font-weight: 700;
     transition: all 500ms ease-in-out;
@@ -64,7 +65,7 @@
 #total-votes {
     font-weight: 700;
     background-color: var(--effectbar);
-    color: #fff;
+    color: var(--effecttextcolor);
     border-radius: 5px 5px 0 0;
     line-height: 1;
     width: 125px;
