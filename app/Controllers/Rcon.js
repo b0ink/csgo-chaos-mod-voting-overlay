@@ -97,11 +97,11 @@ _this.GetEffectData = async (votedEffect) => {
                     reject("Error in getting chaos votes connections status: " + _this.IsRconConnected());
                     // if(!_this.IsRconConnected()){
                     _this.FailedConnections++;
-                    if(!_this.TryingConnection){
-                        if(_this.FailedConnections < 10){
+                    if (!_this.TryingConnection) {
+                        if (_this.FailedConnections < 10) {
                             console.log("Reconnecting to rcon.");
                             _this.ConnectToRcon();
-                        }else{
+                        } else {
                             console.log("Exceeded max failed connections of (10)");
                         }
                     }
@@ -112,15 +112,14 @@ _this.GetEffectData = async (votedEffect) => {
     });
 };
 
-
 _this.CloseConnection = () => {
-    try{
+    try {
         _this.RconServer.disconnect();
-        _this.RconServer = nu
-    }catch(e){
+        _this.RconServer = nu;
+    } catch (e) {
         console.log(e);
     }
-}
+};
 
 /* REMOTES */
 
@@ -158,9 +157,7 @@ ipcMain.handle("Rcon_ConnectToRcon", async (event, data) => {
 ipcMain.handle("Rcon_GetServersChaosVersion", async (event, data) => {
     try {
         if (_this.RconServer.isConnected() && _this.RconServer.isAuthenticated()) {
-            let version = await module.exports.RconServer.execute("csgo_chaos_mod_version").catch(e => {
-                
-            });
+            let version = await module.exports.RconServer.execute("csgo_chaos_mod_version").catch((e) => {});
             version = version.replace('"csgo_chaos_mod_version" = "', "");
             version = version.split('"')[0];
             version = version.split(".").join("");

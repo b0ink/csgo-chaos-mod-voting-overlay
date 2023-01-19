@@ -63,13 +63,13 @@ _this.IsTwitchConnected = () => {
 };
 
 _this.CloseConnection = () => {
-    try{
+    try {
         _this.TwitchClient.disconnect();
         _this.TwitchClient = null;
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
-}
+};
 
 /* REMOTES */
 

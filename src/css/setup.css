@@ -1,8 +1,8 @@
-:root{
+:root {
     --backgroundcolor: #1c1f2c;
     --version-id: #494f6a;
 
-    --tab-background:#00a1e0;
+    --tab-background: #00a1e0;
     /* --tab-background: #e00043; */
     --tab-outline: #1c1f2c;
     --tab-outline: var(--tab-background);
@@ -22,10 +22,8 @@
     --form-control-focus: #404653;
     --form-control-disabled: #70788b;
 
-
     --winning-effect-color: #b14299;
 }
-
 
 body {
     background-color: var(--backgroundcolor);
@@ -163,13 +161,12 @@ h3 {
     border-radius: 35px;
     transition: all ease-in-out 200ms;
     position: relative;
-    
 }
 #open-overlay {
     border: 2px solid var(--open-overlay-button);
 }
 
-#open-overlay:hover{
+#open-overlay:hover {
     background-color: var(--open-overlay-button);
 }
 #reset {
@@ -185,24 +182,24 @@ h3 {
 }
 
 #connect-btn.connecting:before {
-    content: '';
-    background: linear-gradient(45deg, var(--connecting-button),var(--tab-outline),var(--connecting-button),var(--tab-outline),var(--connecting-button));
+    content: "";
+    background: linear-gradient(45deg, var(--connecting-button), var(--tab-outline), var(--connecting-button), var(--tab-outline), var(--connecting-button));
     position: absolute;
     top: -2px;
-    left:-2px;
+    left: -2px;
     background-size: 400%;
     z-index: -1;
     width: calc(100% + 4px);
     height: calc(100% + 4px);
     animation: glowing 30s linear infinite;
     opacity: 1;
-    transition: opacity .5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     border-radius: 35px;
 }
 
 #connect-btn.connecting:after {
     z-index: -1;
-    content: '';
+    content: "";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -212,11 +209,16 @@ h3 {
 }
 
 @keyframes glowing {
-    0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
-    100% { background-position: 0 0; }
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
 }
-
 
 #connect-btn.connecting {
     border: none;
@@ -355,10 +357,10 @@ h3 {
     font-size: 14px;
 }
 
-#connection-tab button:nth-child(1){
+#connection-tab button:nth-child(1) {
     border-radius: 20px 0 0 20px;
 }
-#connection-tab button:nth-child(2){
+#connection-tab button:nth-child(2) {
     border-radius: 0 20px 20px 0;
 }
 
@@ -372,12 +374,12 @@ h3 {
     cursor: default;
 }
 
-#connection-tab button:not(.selected-tab-group):hover:not([disabled]){
+#connection-tab button:not(.selected-tab-group):hover:not([disabled]) {
     color: #fff;
     border: 2px solid var(--tab-outline);
 }
 
-#pref-button{
+#pref-button {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -386,6 +388,6 @@ h3 {
     transition: all 150ms ease-in-out;
 }
 
-#pref-button:hover{
+#pref-button:hover {
     color: #525979;
 }

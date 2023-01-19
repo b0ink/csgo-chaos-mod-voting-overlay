@@ -36,7 +36,7 @@ contextBridge.exposeInMainWorld("electron", {
         CloseVotingOverlay: () => ipcRenderer.invoke("Window_CloseVotingWindow"),
         OpenTMIoauth: () => ipcRenderer.invoke("Window_OpenTmiOauth"),
         SetWindowSize: (data) => ipcRenderer.invoke("Window_SetSetupSize", data),
-        OpenPreferences: () => ipcRenderer.send('showPreferences'),
+        OpenPreferences: () => ipcRenderer.send("showPreferences"),
     },
     VersionAPI: {
         GetAppVersion: () => ipcRenderer.invoke("Version_GetAppVersion"),

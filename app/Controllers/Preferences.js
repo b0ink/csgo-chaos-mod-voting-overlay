@@ -7,13 +7,13 @@ _this.preferences = new ElectronPreferences({
     dataStore: path.resolve(app.getPath("userData"), "preferences.json"),
     defaults: {
         connection: {
-            'streamingservice': "Twitch",
-            'savepasswords': false,
-            'isFirstTimeConnection': true
+            streamingservice: "Twitch",
+            savepasswords: false,
+            isFirstTimeConnection: true,
         },
         voting: {
-            'highlightedeffectcolor': "#b14299",
-            'votingstyle': "proportional",
+            highlightedeffectcolor: "#b14299",
+            votingstyle: "proportional",
         },
     },
     sections: [
@@ -46,18 +46,18 @@ _this.preferences = new ElectronPreferences({
                                     { label: "Yes", value: true },
                                     { label: "No", value: false },
                                 ],
-                                help: 'Note: Selecting no will clear any saved passwords on your next connection.'
+                                help: "Note: Selecting no will clear any saved passwords on your next connection.",
                             },
                             {
-                                label: 'first time connection',
+                                label: "first time connection",
                                 key: "isFirstTimeConnection",
-                                type: 'radio',
+                                type: "radio",
                                 options: [
-                                    {label:'true',value:true},
-                                    {label:'false',value:false},
+                                    { label: "true", value: true },
+                                    { label: "false", value: false },
                                 ],
-                                hideFunction: () => true
-                            }
+                                hideFunction: () => true,
+                            },
                         ],
                     },
                 ],
@@ -92,7 +92,6 @@ _this.preferences = new ElectronPreferences({
                             },
                         ],
                     },
-                    
                 ],
             },
         },
@@ -123,7 +122,7 @@ const configindex = {
     port: "5",
     serverpassword: "6",
     youtubeChannelID: "11",
-    "firstTimeConnection": "7",
+    firstTimeConnection: "7",
     "always-save-passwords": "8",
     "votingWindow-location": "9",
     "setupWindow-location": "10",
@@ -138,7 +137,7 @@ _this.GetSavedLogin = function () {
         port: GetStoredValue("port"),
         serverpassword: GetStoredValue("serverpassword"),
         youtubeChannelID: GetStoredValue("youtubeChannelID"),
-        allowSave: _this.preferences.value('connection.savepasswords'),
+        allowSave: _this.preferences.value("connection.savepasswords"),
     };
     return config;
 };
@@ -148,7 +147,7 @@ _this.SaveLogin = function (data, savePasswords = true) {
     if (data.channelname) store.set(configindex["channelname"], JSON.stringify(safeStorage.encryptString(data.channelname)));
     if (data.serverip) store.set(configindex["serverip"], JSON.stringify(safeStorage.encryptString(data.serverip)));
     if (data.port) store.set(configindex["port"], JSON.stringify(safeStorage.encryptString(data.port)));
-    if (_this.preferences.value('connection.savepasswords')) {
+    if (_this.preferences.value("connection.savepasswords")) {
         if (data.youtubeChannelID) store.set(configindex["youtubeChannelID"], JSON.stringify(safeStorage.encryptString(data.youtubeChannelID)));
         if (data.twitchpassword) store.set(configindex["twitchpassword"], JSON.stringify(safeStorage.encryptString(data.twitchpassword)));
         if (data.serverpassword) store.set(configindex["serverpassword"], JSON.stringify(safeStorage.encryptString(data.serverpassword)));
@@ -179,7 +178,6 @@ _this.SaveWindowLocation = (windowName, x, y) => {
     store.set(configindex[`${windowName}-location`], `${x} ${y}`);
 };
 
-
 /* REMOTES */
 
 ipcMain.handle("Preferences_SaveDetails", async (event, data) => {
@@ -195,9 +193,9 @@ ipcMain.handle("Preferences_GetValue", async (event, data) => {
 });
 
 ipcMain.handle("Preferences_SetValue", async (event, data) => {
-    try{
+    try {
         _this.preferences.value(data.key, data.value);
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
 });

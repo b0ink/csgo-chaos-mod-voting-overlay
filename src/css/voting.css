@@ -1,5 +1,4 @@
-
-#greenscreen{
+#greenscreen {
     position: absolute;
     left: 0;
     top: 0;
@@ -90,8 +89,7 @@
     border-radius: 5px;
 }
 
-
-#timeout-warning{
+#timeout-warning {
     width: 100%;
     text-align: center;
     padding: 25px;
@@ -100,7 +98,7 @@
     font-size: 14px;
 }
 
-.greyed-out{
+.greyed-out {
     background-color: #808080;
     transition: all 500ms ease-in-out;
 }

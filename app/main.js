@@ -10,9 +10,9 @@ const { shell } = require("electron/common");
 const { ipcMain } = require("electron/main");
 const path = require("path");
 
-const Rcon = require('./Controllers/Rcon');
-const Twitch = require('./Controllers/Twitch');
-const YouTube = require('./Controllers/Youtube');
+const Rcon = require("./Controllers/Rcon");
+const Twitch = require("./Controllers/Twitch");
+const YouTube = require("./Controllers/Youtube");
 
 const isDev = !app.isPackaged;
 
@@ -104,21 +104,19 @@ const createVotingWindow = () => {
     });
 };
 
-setInterval(()=> {
-    if(Rcon.FailedConnections >= 10){
-        if(votingWindow){
+setInterval(() => {
+    if (Rcon.FailedConnections >= 10) {
+        if (votingWindow) {
             console.log("CLOSING ALL CONNECTIONS");
             votingWindow.close();
             votingWindow = false;
             Rcon.CloseConnection();
             Twitch.CloseConnection();
             YouTube.CloseConnection();
-            //TODO: 
+            //TODO:
         }
     }
-
 }, 1000);
-
 
 /* REMOTES */
 

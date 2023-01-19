@@ -19,7 +19,6 @@ import { useState } from "react";
 
 export default function Setup() {
     let config;
-     
 
     const [streamingService, setStreamingService] = useState("Twitch");
 
@@ -54,77 +53,76 @@ export default function Setup() {
     const [appVersion, setAppVersion] = useState("");
 
     useEffect(() => {
-        window.electron.PreferencesAPI.GetValue('connection.streamingservice')
-        .then((service) => {
-            if(service !== "Twitch" && service !== "YouTube"){
+        window.electron.PreferencesAPI.GetValue("connection.streamingservice").then((service) => {
+            if (service !== "Twitch" && service !== "YouTube") {
                 service = "Twitch";
             }
             setStreamingService(service);
             window.electron.WindowAPI.SetWindowSize(service);
-        })
-
+        });
 
         setInterval(() => {
-            if(isRconConnected){
-                window.electron.RconAPI.IsConnected().then(data => {
-                    if(!data){
-                        console.log("TURNING OFF RCON")
+            if (isRconConnected) {
+                window.electron.RconAPI.IsConnected().then((data) => {
+                    if (!data) {
+                        console.log("TURNING OFF RCON");
                         setRconConnected(false);
                         setRconError(true);
                         setRconLoading(false);
                     }
-                })
+                });
             }
 
-            if(isTwitchConnected){
-                window.electron.TwitchAPI.IsConnected().then(data => {
-                    if(!data){
-                        console.log("TURNING OFF TWITCH")
+            if (isTwitchConnected) {
+                window.electron.TwitchAPI.IsConnected().then((data) => {
+                    if (!data) {
+                        console.log("TURNING OFF TWITCH");
                         setTwitchConnected(false);
                         setTwitchError(true);
                         setTwitchLoading(false);
                     }
-                })
+                });
             }
 
-            if(isYoutubeConnected){
-                window.electron.YoutubeAPI.IsConnected().then(data => {
-                    if(!data){
-                        console.log("TURNING OFF YOUTUBE")
+            if (isYoutubeConnected) {
+                window.electron.YoutubeAPI.IsConnected().then((data) => {
+                    if (!data) {
+                        console.log("TURNING OFF YOUTUBE");
                         setYoutubeConnected(false);
                         setYoutubeError(true);
                         setYoutubeLoading(false);
                     }
-                })
+                });
             }
-
-        }, 1000)
+        }, 1000);
     }, []);
 
     const HideModal = () => setPromptingSavePass(false);
     const SaveDetails = (allowSave) => {
         window.electron.PreferencesAPI.SetValue({
             //TODO: semi-redundant save
-            key: 'connection.savepasswords',
-            value: allowSave
-        }).then(()=> {
-            return window.electron.PreferencesAPI.SaveDetails({
-                username,
-                channelname,
-                twitchpassword,
-
-                serverip,
-                port,
-                serverpassword,
-
-                youtubeChannelID,
-            });
+            key: "connection.savepasswords",
+            value: allowSave,
         })
-        .then(() => {
-            window.electron.PreferencesAPI.SetValue({
-                key: 'connection.isFirstTimeConnection', value: false
+            .then(() => {
+                return window.electron.PreferencesAPI.SaveDetails({
+                    username,
+                    channelname,
+                    twitchpassword,
+
+                    serverip,
+                    port,
+                    serverpassword,
+
+                    youtubeChannelID,
+                });
+            })
+            .then(() => {
+                window.electron.PreferencesAPI.SetValue({
+                    key: "connection.isFirstTimeConnection",
+                    value: false,
+                });
             });
-        })
 
         HideModal();
     };
@@ -210,7 +208,6 @@ export default function Setup() {
     };
 
     useMemo(() => {
-        
         fetch("https://csgochaosmod.com/version.php")
             .then((res) => {
                 return res.json();
@@ -226,21 +223,23 @@ export default function Setup() {
         });
 
         window.electron.PreferencesAPI.GetDetails()
-        .then((data) => {
-            setUsername(data.username);
-            setChannelname(data.channelname);
-            setTwitchPassword(data.twitchpassword);
-            setServerIP(data.serverip);
-            setPort(data.port);
-            setServerPassword(data.serverpassword);
-            setYoutubeChannelID(data.youtubeChannelID);
-            return window.electron.PreferencesAPI.GetValue('connection.isFirstTimeConnection');
-        }).then(data => {
-            setShouldPromptSavePass(data);
-            return window.electron.PreferencesAPI.GetValue('connection.savepasswords');
-        }).then(data => {
-            setAlwaysSavePass(data);
-        })
+            .then((data) => {
+                setUsername(data.username);
+                setChannelname(data.channelname);
+                setTwitchPassword(data.twitchpassword);
+                setServerIP(data.serverip);
+                setPort(data.port);
+                setServerPassword(data.serverpassword);
+                setYoutubeChannelID(data.youtubeChannelID);
+                return window.electron.PreferencesAPI.GetValue("connection.isFirstTimeConnection");
+            })
+            .then((data) => {
+                setShouldPromptSavePass(data);
+                return window.electron.PreferencesAPI.GetValue("connection.savepasswords");
+            })
+            .then((data) => {
+                setAlwaysSavePass(data);
+            });
     }, []);
 
     const usernameOnChange = (event) => setUsername(event.target.value);
@@ -377,7 +376,7 @@ export default function Setup() {
                 />
             </form>
             <span id="version">v{appVersion}</span>
-            <PreferenceButton/>
+            <PreferenceButton />
         </div>
     );
 }

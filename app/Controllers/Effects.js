@@ -4,7 +4,7 @@ const { ipcMain } = require("electron/main");
 const _this = module.exports;
 
 const Chat = require("./Chat");
-const Preferences = require('./Preferences');
+const Preferences = require("./Preferences");
 
 _this.VotingWindowOpen = false;
 _this.LastPlayedEffect = "";
@@ -19,7 +19,6 @@ const Rcon = require("./Rcon");
 const Twitch = require("./Twitch");
 const Youtube = require("./Youtube");
 
-
 let finalCheckTimer = null;
 let disableVoteTimer = null;
 let delayEffectTimer = null;
@@ -28,7 +27,7 @@ setInterval(() => {
     if (!Rcon.IsRconConnected()) {
         ResetVoting();
         return;
-    };
+    }
     if (!_this.VotingWindowOpen) return;
     GetServerData();
 }, 1000);
@@ -40,13 +39,13 @@ const ResetVoting = () => {
     clearTimeout(finalCheckTimer);
     clearTimeout(disableVoteTimer);
     clearTimeout(delayEffectTimer);
-}
+};
 
 const GetServerData = async () => {
     await Rcon.GetEffectData(GetWinningEffect())
         .then((data) => {
             data = ParseServerData(data);
-            if(!data || !data.lastPlayedEffect){
+            if (!data || !data.lastPlayedEffect) {
                 ResetVoting();
                 return;
             }
@@ -89,7 +88,7 @@ const GetServerData = async () => {
         .catch((e) => {
             //TODO: handle failed attempts
             ResetVoting();
-            console.log(e)
+            console.log(e);
         });
 };
 
@@ -127,7 +126,7 @@ const GetWinningEffect = () => {
         let check4 = check3 + sortedEffects[3].votes;
 
         /* between 1 and totalVotes (inclusive) */
-        let rand = Math.floor(Math.random() * totalVotes) + 1; 
+        let rand = Math.floor(Math.random() * totalVotes) + 1;
         let fctn = "";
         if (rand <= check1) {
             fctn = sortedEffects[0].function;
@@ -157,18 +156,17 @@ const GetWinningEffect = () => {
     }
 };
 
-
-Preferences.preferences.on('save', (data) => {
-    try{
-        if(data.voting.votingstyle == "mostvoted"){
+Preferences.preferences.on("save", (data) => {
+    try {
+        if (data.voting.votingstyle == "mostvoted") {
             _this.ProportionalVoting = false;
-        }else{
+        } else {
             _this.ProportionalVoting = true;
         }
-    }catch(e){
+    } catch (e) {
         _this.ProportionalVoting = true;
     }
-})
+});
 
 /* REMOTES */
 
