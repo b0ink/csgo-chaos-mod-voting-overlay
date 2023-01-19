@@ -1,4 +1,4 @@
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "1.2.0";
 
 const { win, BrowserWindow, app } = require("electron");
 const Preferences = require("./Controllers/Preferences");
@@ -116,7 +116,7 @@ setInterval(()=> {
             //TODO: 
         }
     }
-    
+
 }, 1000);
 
 
