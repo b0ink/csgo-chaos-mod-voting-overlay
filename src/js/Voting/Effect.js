@@ -13,7 +13,7 @@ export default function Effect(props) {
     }
 
     let style = {
-        width: `calc(${percent ? percent : 0}% - 20px)`,
+        width: `calc(${percent ? percent : 0}%)`,
     };
 
     if (!props.canVote) {
