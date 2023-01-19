@@ -106,20 +106,26 @@ const GetWinningEffect = () => {
     if (_this.ProportionalVoting) {
         /* Get effect based of proportional votes */
         let sortedEffects = [..._this.Effects];
+
+        /* Order from lowest to highest */
         sortedEffects = sortedEffects.sort(function (a, b) {
             return a.votes - b.votes;
         });
+
         let totalVotes = 0;
         for (let effect of sortedEffects) {
             totalVotes += effect.votes;
         }
+
         if (sortedEffects.length < 4) {
             return "Random";
         }
+
         let check1 = sortedEffects[0].votes;
         let check2 = check1 + sortedEffects[1].votes;
         let check3 = check2 + sortedEffects[2].votes;
         let check4 = check3 + sortedEffects[3].votes;
+
         /* between 1 and totalVotes (inclusive) */
         let rand = Math.floor(Math.random() * totalVotes) + 1; 
         let fctn = "";
