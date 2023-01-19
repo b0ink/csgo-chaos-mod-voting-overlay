@@ -131,6 +131,7 @@ const GetWinningEffect = () => {
             totalVotes += effect.votes;
         }
 
+        let rand = Math.floor(Math.random() * totalVotes) + 1;
 
         let check1 = sortedEffects[0].votes;
         let check2 = check1 + sortedEffects[1].votes;
@@ -138,6 +139,7 @@ const GetWinningEffect = () => {
         let check4 = check3 + sortedEffects[3].votes;
 
         if(totalVotes == 0){
+            rand = Math.floor(Math.random() * 100) + 1;
             /* No effects got any votes, default them all to have a 25% chance */
             check1 = 25;
             check2 = 50;
@@ -146,7 +148,7 @@ const GetWinningEffect = () => {
         }
 
         /* between 1 and totalVotes (inclusive) */
-        let rand = Math.floor(Math.random() * totalVotes) + 1;
+        
         let fctn = "";
         if (rand <= check1) {
             fctn = sortedEffects[0].function;
