@@ -123,6 +123,10 @@ export default function Voting(props) {
         window.electron.RconAPI.EnableVoting();
     };
 
+    let totalVotesClass = '';
+    if(!effectList[0]){
+        totalVotesClass += 'offside'
+    }
     return (
         <div>
             <div id="greenscreen"></div>
@@ -135,7 +139,7 @@ export default function Voting(props) {
             )}
             {votingEnabled === true && (
                 <div id="voting-panel">
-                    <div id="total-votes">Total Votes: {effectList[0] ? totalVotes: 0}</div>
+                    <div id="total-votes" className={totalVotesClass}>Total Votes: {effectList[0] ? totalVotes: 0}</div>
                     {renderEffects()}
                 </div>
             )}

@@ -24,6 +24,13 @@
 .effect-container div span {
     z-index: 2;
 }
+
+.effect-container{
+    position: relative;
+    transition: all 500ms ease-in-out;
+}
+
+
 .effect {
     width: 100%;
     text-align: center;
@@ -73,6 +80,7 @@
     text-align: center;
     font-size: 14px;
     padding: 4px 0;
+    transition: all 500ms ease-in-out;
 }
 #twitch-disabled {
     width: 100%;
@@ -108,4 +116,8 @@
     background-color: #808080;
     /* background-color: #49595f; */
     transition: all 500ms ease-in-out;
+}
+
+.offside {
+    transform: translateX(400px);
 }

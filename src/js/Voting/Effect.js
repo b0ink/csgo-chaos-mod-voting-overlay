@@ -31,8 +31,13 @@ export default function Effect(props) {
         }
     }
 
+    let containerClass = 'effect-container';
+    if(!props.effect){
+        containerClass += ' offside';
+    }
+
     return (
-        <div className="effect-container">
+        <div className={containerClass}>
             {!props.effect && (
                 <div className="effect">
                     <span></span>
