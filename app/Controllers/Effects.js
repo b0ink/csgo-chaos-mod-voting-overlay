@@ -58,6 +58,7 @@ const GetServerData = async () => {
                     ResetVoting();
                 } else {
                     delayEffectTimer = setTimeout(() => {
+                        //TODO: if all effects are at 0 votes, 25% chance for each effect
                         for (let effect of effects) {
                             effect.votes = 0;
                         }
@@ -116,6 +117,10 @@ const GetWinningEffect = () => {
         /* Get effect based of proportional votes */
         let sortedEffects = [..._this.Effects];
 
+        if (sortedEffects.length < 4) {
+            return "Random";
+        }
+
         /* Order from lowest to highest */
         sortedEffects = sortedEffects.sort(function (a, b) {
             return a.votes - b.votes;
@@ -126,14 +131,19 @@ const GetWinningEffect = () => {
             totalVotes += effect.votes;
         }
 
-        if (sortedEffects.length < 4) {
-            return "Random";
-        }
 
         let check1 = sortedEffects[0].votes;
         let check2 = check1 + sortedEffects[1].votes;
         let check3 = check2 + sortedEffects[2].votes;
         let check4 = check3 + sortedEffects[3].votes;
+
+        if(totalVotes == 0){
+            /* No effects got any votes, default them all to have a 25% chance */
+            check1 = 25;
+            check2 = 50;
+            check3 = 75;
+            check4 = 100;
+        }
 
         /* between 1 and totalVotes (inclusive) */
         let rand = Math.floor(Math.random() * totalVotes) + 1;

@@ -5,7 +5,13 @@ export default function Effect(props) {
 
     /* Calculate percentage bar length */
     let percent = 0;
-    if (props.effect) percent = Math.floor((props.effect.votes / props.totalVotes) * 100);
+    if (props.effect){
+        percent = Math.floor((props.effect.votes / props.totalVotes) * 100);
+        if(props.totalVotes == 0){
+            percent = 25;
+        }
+    }
+
     let style = {
         width: `calc(${percent ? percent : 0}% - 20px)`,
     };
