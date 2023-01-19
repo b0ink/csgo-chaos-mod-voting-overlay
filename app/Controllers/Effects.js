@@ -45,7 +45,7 @@ const GetServerData = async () => {
     await Rcon.GetEffectData(GetWinningEffect())
         .then((data) => {
             data = ParseServerData(data);
-            if (!data || !data.lastPlayedEffect) {
+            if (!data || data.lastPlayedEffect === null) {
                 ResetVoting();
                 return;
             }
@@ -56,7 +56,6 @@ const GetServerData = async () => {
                 let effects = data.effects;
                 if (!effects || !Array.isArray(effects) || data.newEffectTime <= 0) {
                     ResetVoting();
-                    return;
                 } else {
                     delayEffectTimer = setTimeout(() => {
                         for (let effect of effects) {
@@ -81,13 +80,12 @@ const GetServerData = async () => {
                     _this.HighlightWinningEffect = true;
                 }
             }
-
             _this.VotingEnabled = data.twitchEnabled;
             _this.HideEffectList = data.hideEffectList;
         })
         .catch((e) => {
             //TODO: handle failed attempts
-            ResetVoting();
+            // ResetVoting();
             console.log(e);
         });
 };
@@ -97,7 +95,19 @@ const ParseServerData = (data) => {
         data = JSON.parse(data);
         return data;
     } catch (e) {
-        return null;
+        try{
+            //? Any delayed response (eg. when the Lag effect is running) will send multiple backed-up responses
+            /* Clear timer since the game would have delayed the effect trigger time */
+            clearTimeout(disableVoteTimer);
+            
+            //TODO: add a marker in the `data` response from the chaos plugin to split reliably from
+            data = data.split("}]}")[0];
+            data += "}]}";
+            data = JSON.parse(data);
+            return data;
+        }catch(e){
+            return null;
+        }
     }
 };
 
