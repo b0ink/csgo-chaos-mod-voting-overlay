@@ -14,6 +14,7 @@ _this.preferences = new ElectronPreferences({
         voting: {
             highlightedeffectcolor: "#b14299",
             votingstyle: "proportional",
+            alwaysOnTop: true
         },
     },
     sections: [
@@ -89,6 +90,16 @@ _this.preferences = new ElectronPreferences({
                                 format: "hex",
                                 default: "#b14299",
                                 help: "The highlight color to indicate which effect was selected (Default: #b14299)",
+                            },
+                            {
+                                label: "Keep voting window always on top",
+                                key: "alwaysOnTop",
+                                type: "radio",
+                                options: [
+                                    {label: "Yes", value: true},
+                                    {label: "No", value: false},
+                                ],
+                                help: "Selecting yes will force the voting overlay to always stay on top of other windows",
                             },
                         ],
                     },

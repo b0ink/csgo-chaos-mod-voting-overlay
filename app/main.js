@@ -84,6 +84,7 @@ const createVotingWindow = () => {
         offscreen: true,
         title: "CS:GO Chaos Mod Voting",
         backgroundThrottling: false,
+        alwaysOnTop: Preferences.preferences.value('voting.alwaysOnTop')
     });
     votingWindow.loadFile("index.html", {
         query: {
