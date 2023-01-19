@@ -23,7 +23,6 @@ export default function Voting(props) {
             });
 
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
-        setInterval(countTotalVotes, 100);
         setInterval(GetEffectList, 100);
         setInterval(checkIfCanVote, 100);
     }, []);
@@ -78,8 +77,10 @@ export default function Voting(props) {
 
     const countTotalVotes = (effects) => {
         let votes = 0;
-        if (!effects || effects.length == 0) return 0;
-        for (let effect of effects) votes += effect.votes;
+        if (effects && effects.length > 0){
+            console.log(effects);
+            for (let effect of effects) votes += effect.votes;
+        }
         setTotalVotes(votes);
     };
 
@@ -118,7 +119,7 @@ export default function Voting(props) {
             )}
             {votingEnabled === true && (
                 <div id="voting-panel">
-                    <div id="total-votes">Total Votes: {totalVotes}</div>
+                    <div id="total-votes">Total Votes: {effectList[0] ? totalVotes: 0}</div>
                     {renderEffects()}
                 </div>
             )}
