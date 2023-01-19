@@ -56,7 +56,7 @@ const GetServerData = async () => {
 
                 let effects = data.effects;
                 if (!effects || !Array.isArray(effects) || data.newEffectTime <= 0) {
-                    ResetVoting;
+                    ResetVoting();
                     return;
                 } else {
                     delayEffectTimer = setTimeout(() => {
