@@ -63,7 +63,7 @@
 }
 #total-votes {
     font-weight: 700;
-    background-color: #49595f;
+    background-color: var(--effectbar);
     color: #fff;
     border-radius: 5px 5px 0 0;
     line-height: 1;
@@ -105,5 +105,6 @@
 
 .greyed-out {
     background-color: #808080;
+    /* background-color: #49595f; */
     transition: all 500ms ease-in-out;
 }
