@@ -11,7 +11,7 @@ export default function OutOfDatePlugin(props) {
                     <a onClick={props.OpenChaosDownload} target="_blank" href="https://csgochaosmod.com/">
                         Click here
                     </a>{" "}
-                    To download the latest version of the chaos plugin.
+                    to download the latest version of the Chaos Mod plugin.
                 </sub>
             )}
         </div>

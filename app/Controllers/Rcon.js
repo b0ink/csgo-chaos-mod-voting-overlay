@@ -157,11 +157,13 @@ ipcMain.handle("Rcon_ConnectToRcon", async (event, data) => {
 ipcMain.handle("Rcon_GetServersChaosVersion", async (event, data) => {
     try {
         if (_this.RconServer.isConnected() && _this.RconServer.isAuthenticated()) {
-            let version = await module.exports.RconServer.execute("csgo_chaos_mod_version").catch((e) => {});
-            version = version.replace('"csgo_chaos_mod_version" = "', "");
-            version = version.split('"')[0];
-            version = version.split(".").join("");
-            return version;
+            let version = await module.exports.RconServer.execute("chaos_version").catch((e) => {});
+            let pluginVersion = version.substring(
+                version.indexOf(">>") + 2, 
+                version.lastIndexOf("<<")
+            ).split('.').join('');
+            // console.log(`Server is currently running v${pluginVersion}`);
+            return pluginVersion;
         }
     } catch (e) {
         // console.log(e);
