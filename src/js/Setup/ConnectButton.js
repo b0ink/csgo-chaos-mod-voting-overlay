@@ -21,7 +21,7 @@ export default function ConnectButton(props) {
             </button>
             {props.isRconConnected && (props.isTwitchConnected || props.isYoutubeConnected) && (
                 <button type="submit" id="open-overlay" onClick={props.OpenVoting}>
-                    Open Voting
+                    Open Overlay
                 </button>
             )}
         </div>

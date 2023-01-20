@@ -351,7 +351,7 @@ export default function Setup() {
                         channelIdOnChange={channelIdOnChange}
                     />
                 )}
-
+                <div className="spacer"/>
                 <Rcon
                     rconLoading={isRconLoading}
                     rconConnected={isRconConnected}
@@ -365,6 +365,8 @@ export default function Setup() {
                     ToggleRcon={ToggleRcon}
                     isRconVisible={isRconVisible}
                 />
+                <div className="spacer"/>
+                <div id = "connected-status" className={(isRconConnected && isTwitchConnected || isRconConnected && isYoutubeConnected) ? 'display' : 'hide'}>Connected!</div>
                 <ConnectButton
                     isRconConnected={isRconConnected}
                     isRconLoading={isRconLoading}

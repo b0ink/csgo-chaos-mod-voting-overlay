@@ -23,6 +23,8 @@
     --form-control-disabled: #70788b;
 
     --winning-effect-color: #b14299;
+
+    --buttonradious: 25px;
 }
 
 body {
@@ -111,7 +113,8 @@ h3 {
 }
 .form-container {
     max-width: 85%;
-    margin: 25px auto;
+    /* margin: 25px auto; */
+    margin: 0 auto;
 }
 .form-container h4 {
     color: #fff;
@@ -146,7 +149,6 @@ h3 {
 #connect-btn,
 #reset,
 #open-overlay {
-    border-radius: 5px;
     font-size: 16px;
     line-height: 0.9;
     background: none;
@@ -158,11 +160,13 @@ h3 {
     margin: 5px 10px 0;
     display: block;
     font-weight: 700;
-    border-radius: 35px;
+    border-radius: var(--buttonradious);
     transition: all ease-in-out 200ms;
     position: relative;
     user-select: none;
+    
 }
+
 #open-overlay {
     border: 2px solid var(--open-overlay-button);
 }
@@ -195,7 +199,7 @@ h3 {
     animation: glowing 30s linear infinite;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-    border-radius: 35px;
+    border-radius: var(--buttonradious);
 }
 
 #connect-btn.connecting:after {
@@ -206,7 +210,6 @@ h3 {
     height: 100%;
     left: 0;
     top: 0;
-    border-radius: 35px;
 }
 
 @keyframes glowing {
@@ -230,6 +233,7 @@ h3 {
     border: none;
     color: var(--connected-button);
     user-select: none;
+    display: none;
     /* 
     position: absolute;
     left: 50%;
@@ -391,4 +395,20 @@ h3 {
 
 #pref-button:hover {
     color: #525979;
+}
+
+#connected-status{
+    margin: 0;
+    color: var(--connected-button);
+    font-size: 12px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+}
+#connected-status.hide{
+    opacity: 0;
+}
+.spacer{
+    margin: 15px 0;
 }
