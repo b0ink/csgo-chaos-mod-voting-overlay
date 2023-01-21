@@ -5,7 +5,7 @@
     "main": "app/main.js",
     "scripts": {
         "start": "electron .",
-        "watch": "webpack --config webpack.dev.js --watch",
+        "watch": "node -e \"require('fs-extra').emptyDir('./build');\" && webpack --config webpack.dev.js --watch",
         "compile": "webpack --config webpack.common.js",
         "build": "set \"GENERATE_SOURCEMAP=false\" && npm run compile && electron-builder",
         "buildonly": "electron-builder"
