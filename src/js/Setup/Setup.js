@@ -246,7 +246,10 @@ export default function Setup() {
     const channelnameOnChange = (event) => setChannelname(event.target.value);
     const twitchpasswordOnChange = (event) => setTwitchPassword(event.target.value);
     const serveripOnChange = (event) => setServerIP(event.target.value);
-    const portOnChange = (event) => setPort(event.target.value);
+    const portOnChange = (event) => {
+        let sanitized = event.target.value.replace(/[^0-9]/g, '');
+        setPort(sanitized);
+    }
     const serverpasswordOnChange = (event) => setServerPassword(event.target.value);
     const channelIdOnChange = (event) => setYoutubeChannelID(event.target.value);
 
