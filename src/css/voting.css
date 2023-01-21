@@ -28,6 +28,7 @@
 .effect-container{
     position: relative;
     transition: all 500ms ease-in-out;
+    /* transition-delay: 1500ms; */
 }
 
 

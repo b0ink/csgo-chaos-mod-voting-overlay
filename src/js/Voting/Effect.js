@@ -4,18 +4,24 @@ export default function Effect(props) {
     let effectClassName = ['effect'];
     let containerClassName = ['effect-container'];
 
-    let style = {
-        width: `calc(${percent ? percent : 0}%)`,
-    };
+
+    let containerStyle = {
+
+    }
+    
 
     /* Calculate percentage bar length */
     let percent = 0;
-    if (props.effect){
+    if (props.effect){  
         percent = Math.floor((props.effect.votes / props.totalVotes) * 100);
         if(props.totalVotes == 0){
             percent = 25;
         }
     }
+
+    let style = {
+        width: `${percent ? percent : 0}%`,
+    };
 
     /* Disabled 1 second before pulling vote */
     if (!props.canVote) {
@@ -28,17 +34,20 @@ export default function Effect(props) {
     if (props.effect && props.highlightLastEffect) {
         if (props.lastEffect == props.effect.function || (props.isRandomEffect && props.index == 4)) {
             style["backgroundColor"] = "var(--winning-effect-color)";
-            effectClassName.push('highlights');
+            effectClassName.push('highlight');
         } else {
             effectClassName.push('non-highlight');
         }
     }
 
     /* Push effect off the screen while no active effects */
-    if(!props.effect) containerClassName.push('offside');
+    if(!props.effect){
+        containerStyle['transitionDelay'] = `${props.index * 0.1}s`
+        containerClassName.push('offside');
+    }
 
     return (
-        <div className={containerClassName.join(' ')}>
+        <div className={containerClassName.join(' ')} style={containerStyle}>
             {!props.effect && (
                 <div className="effect">
                     <span></span>

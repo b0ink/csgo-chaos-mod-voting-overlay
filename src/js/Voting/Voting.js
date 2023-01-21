@@ -94,7 +94,6 @@ export default function Voting(props) {
     const countTotalVotes = (effects) => {
         let votes = 0;
         if (effects && effects.length > 0){
-            console.log(effects);
             for (let effect of effects) votes += effect.votes;
         }
         setTotalVotes(votes);
