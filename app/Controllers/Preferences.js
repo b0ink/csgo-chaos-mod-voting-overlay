@@ -1,5 +1,5 @@
 const _this = module.exports;
-const { ipcMain, ipcRenderer,safeStorage, app } = require("electron");
+const { ipcMain, ipcRenderer, safeStorage, app } = require("electron");
 const ElectronPreferences = require("electron-preferences");
 const path = require("path");
 
@@ -15,10 +15,10 @@ _this.preferences = new ElectronPreferences({
             highlightedEffectColor: "#b14299",
             votingStyle: "proportional",
             alwaysOnTop: true,
-            chromaKeyBackground: '#00ff00',
-            defaultEffectBar: '#323d41',
-            percentageBar: '#33587a',
-            effectTextColor: '#fff'
+            chromaKeyBackground: "#00ff00",
+            defaultEffectBar: "#323d41",
+            percentageBar: "#33587a",
+            effectTextColor: "#fff",
         },
     },
     sections: [
@@ -98,14 +98,14 @@ _this.preferences = new ElectronPreferences({
                                 key: "defaultEffectBar",
                                 type: "color",
                                 format: "hex",
-                                help: 'Background color of the effect row.'
+                                help: "Background color of the effect row.",
                             },
                             {
                                 label: "Percentage Bar Color",
                                 key: "percentageBar",
                                 type: "color",
                                 format: "hex",
-                                help: "Background color of the bar that depicts the amount of votes the effect has (as a percentage)."
+                                help: "Background color of the bar that depicts the amount of votes the effect has (as a percentage).",
                             },
                             {
                                 label: "Highlighted Effect Color",
@@ -126,17 +126,17 @@ _this.preferences = new ElectronPreferences({
                                 key: "alwaysOnTop",
                                 type: "radio",
                                 options: [
-                                    {label: "Yes", value: true},
-                                    {label: "No", value: false},
+                                    { label: "Yes", value: true },
+                                    { label: "No", value: false },
                                 ],
                                 help: "Selecting yes will force the voting overlay to always stay on top of other windows.",
                             },
                             {
-                                key: 'resetVotingDefaults',
+                                key: "resetVotingDefaults",
                                 type: "button",
-                                buttonLabel: 'Reset Defaults',
-                                help: 'Note: Re-open the preferences window to update.'
-                            }
+                                buttonLabel: "Reset Defaults",
+                                help: "Note: Re-open the preferences window to update.",
+                            },
                         ],
                     },
                 ],
@@ -145,15 +145,14 @@ _this.preferences = new ElectronPreferences({
     ],
 });
 
-
-_this.preferences.on('click', (key) => {
-    if (key === 'resetVotingDefaults') {
-        for(let obj in _this.preferences.defaults.voting){
-            _this.preferences.value(`voting.${obj}`, _this.preferences.defaults.voting[obj])
+_this.preferences.on("click", (key) => {
+    if (key === "resetVotingDefaults") {
+        for (let obj in _this.preferences.defaults.voting) {
+            _this.preferences.value(`voting.${obj}`, _this.preferences.defaults.voting[obj]);
         }
     }
 });
-  
+
 const Store = require("electron-store");
 const store = new Store();
 

@@ -13,46 +13,45 @@ export default function Voting(props) {
     const [totalVotes, setTotalVotes] = useState(0);
     const [canVote, setCanVote] = useState(true);
     const [isRandomEffect, setIsRandomEffect] = useState(false);
-    
+
     const [isConnected, setConnected] = useState(false);
 
     useEffect(() => {
-        const root = document.querySelector(':root');
-        window.electron.PreferencesAPI.GetValue('voting.highlightedEffectColor')
-            .then(data => {
+        const root = document.querySelector(":root");
+        window.electron.PreferencesAPI.GetValue("voting.highlightedEffectColor")
+            .then((data) => {
                 //TODO: check if this updates often
-                root.style.setProperty('--winning-effect-color', data);
-                return window.electron.PreferencesAPI.GetValue('voting.chromaKeyBackground');
+                root.style.setProperty("--winning-effect-color", data);
+                return window.electron.PreferencesAPI.GetValue("voting.chromaKeyBackground");
             })
-            .then(data =>{
-                root.style.setProperty('--chromakey', data);
-                return window.electron.PreferencesAPI.GetValue('voting.defaultEffectBar');
+            .then((data) => {
+                root.style.setProperty("--chromakey", data);
+                return window.electron.PreferencesAPI.GetValue("voting.defaultEffectBar");
             })
-            .then(data =>{
-                root.style.setProperty('--effectbar', data);
-                return window.electron.PreferencesAPI.GetValue('voting.percentageBar');
+            .then((data) => {
+                root.style.setProperty("--effectbar", data);
+                return window.electron.PreferencesAPI.GetValue("voting.percentageBar");
             })
-            .then(data =>{
-                root.style.setProperty('--percentageBar', data);
-                return window.electron.PreferencesAPI.GetValue('voting.effectTextColor');
+            .then((data) => {
+                root.style.setProperty("--percentageBar", data);
+                return window.electron.PreferencesAPI.GetValue("voting.effectTextColor");
             })
-            .then(data =>{
-                root.style.setProperty('--effecttextcolor', data);
-            })
+            .then((data) => {
+                root.style.setProperty("--effecttextcolor", data);
+            });
 
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
         setInterval(GetEffectList, 100);
         setInterval(checkIfCanVote, 100);
 
         setInterval(() => {
-            window.electron.RconAPI.IsConnected()
-                .then(data => {
-                    if(!data){
-                        setConnected(false);
-                    }else{
-                        setConnected(true);
-                    }
-                })
+            window.electron.RconAPI.IsConnected().then((data) => {
+                if (!data) {
+                    setConnected(false);
+                } else {
+                    setConnected(true);
+                }
+            });
         }, 250);
     }, []);
 
@@ -106,7 +105,7 @@ export default function Voting(props) {
 
     const countTotalVotes = (effects) => {
         let votes = 0;
-        if (effects && effects.length > 0){
+        if (effects && effects.length > 0) {
             for (let effect of effects) votes += effect.votes;
         }
         setTotalVotes(votes);
@@ -135,16 +134,16 @@ export default function Voting(props) {
         window.electron.RconAPI.EnableVoting();
     };
 
-    let totalVotesClass = '';
-    if(!effectList[0]){
-        totalVotesClass += 'offside'
+    let totalVotesClass = "";
+    if (!effectList[0]) {
+        totalVotesClass += "offside";
     }
     return (
         <div>
             <div id="greenscreen"></div>
             {/* {timeoutWarning && <div id="timeout-warning">This window will close automatically when Chaos is disabled. {`(${60 - timeouts})`}</div>} */}
             {!isConnected && (
-                <div id = "twitch-disabled">
+                <div id="twitch-disabled">
                     <p>You have lost connection to the server, please re-connect</p>
                 </div>
             )}
@@ -156,7 +155,9 @@ export default function Voting(props) {
             )}
             {votingEnabled === true && isConnected && (
                 <div id="voting-panel">
-                    <div id="total-votes" className={totalVotesClass}>Total Votes: {effectList[0] ? totalVotes: 0}</div>
+                    <div id="total-votes" className={totalVotesClass}>
+                        Total Votes: {effectList[0] ? totalVotes : 0}
+                    </div>
                     {renderEffects()}
                 </div>
             )}

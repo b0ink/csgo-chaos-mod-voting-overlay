@@ -17,7 +17,6 @@ import { useState } from "react";
 //      -> dark/light mode?
 //      -> set which streaming service is started by default?
 
-
 let rconConnected = false;
 let twitchConnected = false;
 let youtubeConnected = false;
@@ -61,7 +60,7 @@ export default function Setup() {
         rconConnected = isRconConnected;
         twitchConnected = isTwitchConnected;
         youtubeConnected = isYoutubeConnected;
-    }, [isRconConnected, isYoutubeConnected, isTwitchConnected])
+    }, [isRconConnected, isYoutubeConnected, isTwitchConnected]);
 
     useEffect(() => {
         window.electron.PreferencesAPI.GetValue("connection.streamingService").then((service) => {
@@ -80,7 +79,7 @@ export default function Setup() {
                     setRconConnected(false);
                     setRconError(true);
                     setRconLoading(false);
-                }else if(data){
+                } else if (data) {
                     setTimeout(() => {
                         setRconConnected(true);
                         setRconError(false);
@@ -94,7 +93,7 @@ export default function Setup() {
                     setTwitchConnected(false);
                     setTwitchError(true);
                     setTwitchLoading(false);
-                }else if(data){
+                } else if (data) {
                     setTwitchConnected(true);
                     setTwitchError(false);
                     setTwitchLoading(false);
@@ -106,15 +105,13 @@ export default function Setup() {
                     setYoutubeConnected(false);
                     setYoutubeError(true);
                     setYoutubeLoading(false);
-                }else if(data){
+                } else if (data) {
                     setYoutubeConnected(true);
                     setYoutubeError(false);
                     setYoutubeLoading(false);
                 }
             });
-    }, 1000);
-
-   
+        }, 1000);
     }, []);
 
     const HideModal = () => setPromptingSavePass(false);
@@ -267,9 +264,9 @@ export default function Setup() {
     const twitchpasswordOnChange = (event) => setTwitchPassword(event.target.value);
     const serveripOnChange = (event) => setServerIP(event.target.value);
     const portOnChange = (event) => {
-        let sanitized = event.target.value.replace(/[^0-9]/g, '');
+        let sanitized = event.target.value.replace(/[^0-9]/g, "");
         setPort(sanitized);
-    }
+    };
     const serverpasswordOnChange = (event) => setServerPassword(event.target.value);
     const channelIdOnChange = (event) => setYoutubeChannelID(event.target.value);
 
@@ -374,7 +371,7 @@ export default function Setup() {
                         channelIdOnChange={channelIdOnChange}
                     />
                 )}
-                <div className="spacer"/>
+                <div className="spacer" />
                 <Rcon
                     rconLoading={isRconLoading}
                     rconConnected={isRconConnected}
@@ -388,8 +385,10 @@ export default function Setup() {
                     ToggleRcon={ToggleRcon}
                     isRconVisible={isRconVisible}
                 />
-                <div className="spacer"/>
-                <div id = "connected-status" className={(isRconConnected && isTwitchConnected || isRconConnected && isYoutubeConnected) ? 'display' : 'hide'}>Connected!</div>
+                <div className="spacer" />
+                <div id="connected-status" className={(isRconConnected && isTwitchConnected) || (isRconConnected && isYoutubeConnected) ? "display" : "hide"}>
+                    Connected!
+                </div>
                 <ConnectButton
                     isRconConnected={isRconConnected}
                     isRconLoading={isRconLoading}

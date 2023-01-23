@@ -48,14 +48,14 @@ _this.ConnectToYoutube = async function (event, details) {
 };
 
 _this.CloseConnection = () => {
-    try{
+    try {
         _this.liveChat.stop();
         _this.liveChatListener = null;
         _this.liveChat = null;
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
-}
+};
 
 /* REMOTES */
 
@@ -66,7 +66,6 @@ ipcMain.handle("Youtube_ConnectToYoutube", async (event, data) => {
     };
 });
 
-
 ipcMain.handle("Youtube_IsYoutubeConnected", async (event, data) => {
-    return _this.liveChat && _this.liveChatListener
+    return _this.liveChat && _this.liveChatListener;
 });

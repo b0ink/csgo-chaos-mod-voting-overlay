@@ -22,7 +22,7 @@ _this.FailedConnections = 0;
 _this.TryingConnection = false;
 
 setInterval(() => {
-    if(_this.FailedConnections > 10){
+    if (_this.FailedConnections > 10) {
         _this.RconServer = null;
         _this.TryingConnection = false;
         _this.FailedConnections = 0;
@@ -110,22 +110,19 @@ _this.GetEffectData = async (votedEffect) => {
                     if (!_this.TryingConnection) {
                         if (_this.FailedConnections < 10) {
                             _this.RconServer = null;
-                            if(retryConnectionTimer){
+                            if (retryConnectionTimer) {
                                 clearInterval(retryConnectionTimer);
                             }
                             retryConnectionTimer = setInterval(async () => {
-                                console.log('Retrying rcon connection');
-                                let connection = await _this.ConnectToRcon().catch(e => {
-
-                                })
-                                if(connection){
+                                console.log("Retrying rcon connection");
+                                let connection = await _this.ConnectToRcon().catch((e) => {});
+                                if (connection) {
                                     clearInterval(retryConnectionTimer);
                                 }
                             }, 1000);
-                            
                         } else {
                             console.log("Exceeded max failed connections of (10)");
-                            if(retryConnectionTimer){
+                            if (retryConnectionTimer) {
                                 clearInterval(retryConnectionTimer);
                             }
                         }
@@ -185,10 +182,10 @@ ipcMain.handle("Rcon_GetServersChaosVersion", async (event, data) => {
     try {
         if (_this.RconServer.isConnected() && _this.RconServer.isAuthenticated()) {
             let version = await module.exports.RconServer.execute("chaos_version").catch((e) => {});
-            let pluginVersion = version.substring(
-                version.indexOf(">>") + 2, 
-                version.lastIndexOf("<<")
-            ).split('.').join('');
+            let pluginVersion = version
+                .substring(version.indexOf(">>") + 2, version.lastIndexOf("<<"))
+                .split(".")
+                .join("");
             // console.log(`Server is currently running v${pluginVersion}`);
             return pluginVersion;
         }

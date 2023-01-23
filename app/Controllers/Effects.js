@@ -96,17 +96,17 @@ const ParseServerData = (data) => {
         data = JSON.parse(data);
         return data;
     } catch (e) {
-        try{
+        try {
             //? Any delayed response (eg. when the Lag effect is running) will send multiple backed-up responses
             /* Clear timer since the game would have delayed the effect trigger time */
             clearTimeout(disableVoteTimer);
-            
+
             //TODO: add a marker in the `data` response from the chaos plugin to split reliably from
             data = data.split("}]}")[0];
             data += "}]}";
             data = JSON.parse(data);
             return data;
-        }catch(e){
+        } catch (e) {
             return null;
         }
     }
@@ -138,7 +138,7 @@ const GetWinningEffect = () => {
         let check3 = check2 + sortedEffects[2].votes;
         let check4 = check3 + sortedEffects[3].votes;
 
-        if(totalVotes == 0){
+        if (totalVotes == 0) {
             rand = Math.floor(Math.random() * 100) + 1;
             /* No effects got any votes, default them all to have a 25% chance */
             check1 = 25;
@@ -148,7 +148,7 @@ const GetWinningEffect = () => {
         }
 
         /* between 1 and totalVotes (inclusive) */
-        
+
         let fctn = "";
         if (rand <= check1) {
             fctn = sortedEffects[0].function;
