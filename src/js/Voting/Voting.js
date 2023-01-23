@@ -13,6 +13,8 @@ export default function Voting(props) {
     const [totalVotes, setTotalVotes] = useState(0);
     const [canVote, setCanVote] = useState(true);
     const [isRandomEffect, setIsRandomEffect] = useState(false);
+    
+    const [isConnected, setConnected] = useState(false);
 
     useEffect(() => {
         const root = document.querySelector(':root');
@@ -41,6 +43,17 @@ export default function Voting(props) {
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
         setInterval(GetEffectList, 100);
         setInterval(checkIfCanVote, 100);
+
+        setInterval(() => {
+            window.electron.RconAPI.IsConnected()
+                .then(data => {
+                    if(!data){
+                        setConnected(false);
+                    }else{
+                        setConnected(true);
+                    }
+                })
+        }, 250);
     }, []);
 
     const checkIfCanVote = () => {
@@ -130,13 +143,18 @@ export default function Voting(props) {
         <div>
             <div id="greenscreen"></div>
             {/* {timeoutWarning && <div id="timeout-warning">This window will close automatically when Chaos is disabled. {`(${60 - timeouts})`}</div>} */}
-            {votingEnabled !== true && (
+            {!isConnected && (
+                <div id = "twitch-disabled">
+                    <p>You have lost connection to the server, please re-connect</p>
+                </div>
+            )}
+            {votingEnabled !== true && isConnected && (
                 <div id="twitch-disabled">
                     <p>Voting is currently disabled on the server.</p>
                     <button onClick={EnableTwitchChaos}>Enable Voting</button>
                 </div>
             )}
-            {votingEnabled === true && (
+            {votingEnabled === true && isConnected && (
                 <div id="voting-panel">
                     <div id="total-votes" className={totalVotesClass}>Total Votes: {effectList[0] ? totalVotes: 0}</div>
                     {renderEffects()}

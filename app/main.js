@@ -83,9 +83,11 @@ const createVotingWindow = () => {
         backgroundThrottling: false,
         offscreen: true,
         title: "CS:GO Chaos Mod Voting",
-        backgroundThrottling: false,
-        alwaysOnTop: Preferences.preferences.value('voting.alwaysOnTop')
+        alwaysOnTop: Preferences.preferences.value("voting.alwaysOnTop"),
+        minimizable: false,
+        maximizable: false,
     });
+    votingWindow.setAlwaysOnTop(true, "screen-saver");
     votingWindow.loadFile("index.html", {
         query: {
             page: "Voting",

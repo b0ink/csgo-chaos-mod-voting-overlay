@@ -65,3 +65,8 @@ ipcMain.handle("Youtube_ConnectToYoutube", async (event, data) => {
         success: ytConnection.success,
     };
 });
+
+
+ipcMain.handle("Youtube_IsYoutubeConnected", async (event, data) => {
+    return _this.liveChat && _this.liveChatListener
+});

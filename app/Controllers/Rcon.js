@@ -21,7 +21,15 @@ _this.RconServer = new Rcon(config);
 _this.FailedConnections = 0;
 _this.TryingConnection = false;
 
-_this.ConnectToRcon = async (details) => {
+setInterval(() => {
+    if(_this.FailedConnections > 10){
+        _this.RconServer = null;
+        _this.TryingConnection = false;
+        _this.FailedConnections = 0;
+    }
+}, 1000);
+
+_this.ConnectToRcon = async (details, tryReconnect = false) => {
     return new Promise((resolve, reject) => {
         _this.RconServer = new Rcon(config);
         _this.TryingConnection = true;
@@ -63,7 +71,9 @@ _this.ConnectToRcon = async (details) => {
                 .catch((e) => {
                     _this.TryingConnection = false;
                     _this.FailedConnections++;
-                    reject("Could not authenticate:", e);
+                    // _this.RconServer = null;
+                    console.log(e);
+                    reject("Could not authenticate.");
                 })
                 .finally(() => {
                     _this.TryingConnection = false;
@@ -82,6 +92,7 @@ _this.IsRconConnected = () => {
     return _this.RconServer && _this.RconServer.authenticated && _this.RconServer.connected;
 };
 
+let retryConnectionTimer;
 _this.GetEffectData = async (votedEffect) => {
     return new Promise((resolve, reject) => {
         try {
@@ -94,19 +105,35 @@ _this.GetEffectData = async (votedEffect) => {
                     resolve(data);
                 })
                 .catch((e) => {
-                    reject("Error in getting chaos votes connections status: " + _this.IsRconConnected());
                     // if(!_this.IsRconConnected()){
                     _this.FailedConnections++;
                     if (!_this.TryingConnection) {
                         if (_this.FailedConnections < 10) {
-                            console.log("Reconnecting to rcon.");
-                            _this.ConnectToRcon();
+                            _this.RconServer = null;
+                            if(retryConnectionTimer){
+                                clearInterval(retryConnectionTimer);
+                            }
+                            retryConnectionTimer = setInterval(async () => {
+                                console.log('Retrying rcon connection');
+                                let connection = await _this.ConnectToRcon().catch(e => {
+
+                                })
+                                if(connection){
+                                    clearInterval(retryConnectionTimer);
+                                }
+                            }, 1000);
+                            
                         } else {
                             console.log("Exceeded max failed connections of (10)");
+                            if(retryConnectionTimer){
+                                clearInterval(retryConnectionTimer);
+                            }
                         }
                     }
+                    reject("Error in getting chaos votes connections status: " + _this.IsRconConnected());
                 });
         } catch (e) {
+            _this.FailedConnections++;
             reject("Failed to execute command.");
         }
     });
@@ -115,7 +142,7 @@ _this.GetEffectData = async (votedEffect) => {
 _this.CloseConnection = () => {
     try {
         _this.RconServer.disconnect();
-        _this.RconServer = nu;
+        _this.RconServer = null;
     } catch (e) {
         console.log(e);
     }

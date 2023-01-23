@@ -17,6 +17,11 @@ import { useState } from "react";
 //      -> dark/light mode?
 //      -> set which streaming service is started by default?
 
+
+let rconConnected = false;
+let twitchConnected = false;
+let youtubeConnected = false;
+
 export default function Setup() {
     let config;
 
@@ -53,6 +58,12 @@ export default function Setup() {
     const [appVersion, setAppVersion] = useState("");
 
     useEffect(() => {
+        rconConnected = isRconConnected;
+        twitchConnected = isTwitchConnected;
+        youtubeConnected = isYoutubeConnected;
+    }, [isRconConnected, isYoutubeConnected, isTwitchConnected])
+
+    useEffect(() => {
         window.electron.PreferencesAPI.GetValue("connection.streamingService").then((service) => {
             if (service !== "Twitch" && service !== "YouTube") {
                 service = "Twitch";
@@ -60,41 +71,50 @@ export default function Setup() {
             setStreamingService(service);
             window.electron.WindowAPI.SetWindowSize(service);
         });
+    }, []);
 
+    useEffect(() => {
         setInterval(() => {
-            if (isRconConnected) {
-                window.electron.RconAPI.IsConnected().then((data) => {
-                    if (!data) {
-                        console.log("TURNING OFF RCON");
-                        setRconConnected(false);
-                        setRconError(true);
+            window.electron.RconAPI.IsConnected().then((data) => {
+                if (!data && rconConnected) {
+                    setRconConnected(false);
+                    setRconError(true);
+                    setRconLoading(false);
+                }else if(data){
+                    setTimeout(() => {
+                        setRconConnected(true);
+                        setRconError(false);
                         setRconLoading(false);
-                    }
-                });
-            }
+                    }, 2000);
+                }
+            });
 
-            if (isTwitchConnected) {
-                window.electron.TwitchAPI.IsConnected().then((data) => {
-                    if (!data) {
-                        console.log("TURNING OFF TWITCH");
-                        setTwitchConnected(false);
-                        setTwitchError(true);
-                        setTwitchLoading(false);
-                    }
-                });
-            }
+            window.electron.TwitchAPI.IsConnected().then((data) => {
+                if (!data && twitchConnected) {
+                    setTwitchConnected(false);
+                    setTwitchError(true);
+                    setTwitchLoading(false);
+                }else if(data){
+                    setTwitchConnected(true);
+                    setTwitchError(false);
+                    setTwitchLoading(false);
+                }
+            });
 
-            if (isYoutubeConnected) {
-                window.electron.YoutubeAPI.IsConnected().then((data) => {
-                    if (!data) {
-                        console.log("TURNING OFF YOUTUBE");
-                        setYoutubeConnected(false);
-                        setYoutubeError(true);
-                        setYoutubeLoading(false);
-                    }
-                });
-            }
-        }, 1000);
+            window.electron.YoutubeAPI.IsConnected().then((data) => {
+                if (!data && youtubeConnected) {
+                    setYoutubeConnected(false);
+                    setYoutubeError(true);
+                    setYoutubeLoading(false);
+                }else if(data){
+                    setYoutubeConnected(true);
+                    setYoutubeError(false);
+                    setYoutubeLoading(false);
+                }
+            });
+    }, 1000);
+
+   
     }, []);
 
     const HideModal = () => setPromptingSavePass(false);
