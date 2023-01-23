@@ -1,4 +1,4 @@
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.2.1";
 
 const { win, BrowserWindow, app } = require("electron");
 const Preferences = require("./Controllers/Preferences");
