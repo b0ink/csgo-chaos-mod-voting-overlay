@@ -86,6 +86,7 @@ const createVotingWindow = () => {
         alwaysOnTop: Preferences.preferences.value("voting.alwaysOnTop"),
         minimizable: false,
         maximizable: false,
+        resizable: false,
     });
     votingWindow.setAlwaysOnTop(true, "screen-saver");
     votingWindow.loadFile("index.html", {
