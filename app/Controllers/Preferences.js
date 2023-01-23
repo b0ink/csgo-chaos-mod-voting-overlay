@@ -10,6 +10,7 @@ _this.preferences = new ElectronPreferences({
             streamingService: "Twitch",
             savePasswords: false,
             isFirstTimeConnection: true,
+            autoEnableConvar: true
         },
         voting: {
             highlightedEffectColor: "#b14299",
@@ -62,6 +63,16 @@ _this.preferences = new ElectronPreferences({
                                     { label: "false", value: false },
                                 ],
                                 hideFunction: () => true,
+                            },
+                            {
+                                label: "Auto-enable Voting ConVar In-Game",
+                                key: "autoEnableConvar",
+                                type: "radio",
+                                options: [
+                                    { label: "Yes", value: true },
+                                    { label: "No", value: false },
+                                ],
+                                help: "Auto-enable 'sm_chaos_twitch_enabled' ConVar when connected to the server to enable voting.",
                             },
                         ],
                     },

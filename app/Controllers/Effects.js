@@ -83,9 +83,16 @@ const GetServerData = async () => {
             }
             _this.VotingEnabled = data.twitchEnabled;
             _this.HideEffectList = data.hideEffectList;
+
+            if(Preferences.preferences.value('connection.autoEnableConvar') && !_this.VotingEnabled){
+                try{
+                    Rcon.RconServer.execute("sm_cvar sm_chaos_twitch_enabled 1");
+                }catch(e){
+                    console.log(e);
+                }
+            }
         })
         .catch((e) => {
-            //TODO: handle failed attempts
             // ResetVoting();
             console.log(e);
         });
