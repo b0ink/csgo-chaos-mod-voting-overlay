@@ -72,7 +72,7 @@ _this.preferences = new ElectronPreferences({
                                     { label: "Yes", value: true },
                                     { label: "No", value: false },
                                 ],
-                                help: "Auto-enable 'sm_chaos_twitch_enabled' ConVar when connected to the server to enable voting.",
+                                help: "Auto-enable 'sm_chaos_voting_enabled' ConVar when connected to the server to enable voting.",
                             },
                         ],
                     },

@@ -86,7 +86,7 @@ const GetServerData = async () => {
 
             if(Preferences.preferences.value('connection.autoEnableConvar') && !_this.VotingEnabled){
                 try{
-                    Rcon.RconServer.execute("sm_cvar sm_chaos_twitch_enabled 1");
+                    Rcon.RconServer.execute("sm_cvar sm_chaos_voting_enabled 1");
                 }catch(e){
                     console.log(e);
                 }

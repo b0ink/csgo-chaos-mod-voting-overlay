@@ -153,7 +153,7 @@ ipcMain.handle("Rcon_IsRconConnected", async (event, data) => {
 
 ipcMain.handle("Rcon_EnableVoting", async (event, data) => {
     try{
-        await _this.RconServer.execute("sm_cvar sm_chaos_twitch_enabled 1");
+        await _this.RconServer.execute("sm_cvar sm_chaos_voting_enabled 1");
     }catch(e){
         console.log(e);
     }
