@@ -1,6 +1,6 @@
 {
     "name": "csgo-chaos-mod-voting",
-    "version": "1.2.1",
+    "version": "1.3.1",
     "description": "Connects your Twitch and YouTube account to your CS:GO server to pull votes and display a voting overlay",
     "main": "app/main.js",
     "scripts": {
