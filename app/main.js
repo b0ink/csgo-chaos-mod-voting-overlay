@@ -142,7 +142,10 @@ ipcMain.handle("Window_OpenTmiOauth", () => shell.openExternal("https://twitchap
 ipcMain.handle("Window_OpenVotingWindow", () => createVotingWindow());
 ipcMain.handle("Window_CloseVotingWindow", () => votingWindow.close());
 
-app.whenReady().then(createSetupWindow);
+app.whenReady().then(() => {
+    createSetupWindow();
+    Preferences.preferences.value('voting.debugMultipleVotes', false);
+});
 
 app.on("window-all-closed", function (e) {
     if (process.platform !== "darwin") {

@@ -4,6 +4,7 @@ const { app } = require("electron");
 const { ipcMain } = require("electron/main");
 
 const EffectsController = require("./Effects");
+const { preferences } = require("./Preferences");
 
 _this.VoteTracker = {};
 _this.CanVote = true;
@@ -20,7 +21,7 @@ _this.SaveVote = (message, userIdentifier) => {
             }
             if (vote > 4) vote = vote - 4;
             EffectsController.Effects[vote - 1].votes += 1;
-            if (app.isPackaged) {
+            if (!preferences.value('voting.debugMultipleVotes')) {
                 _this.VoteTracker[userIdentifier] = true;
             }
         } catch (e) {

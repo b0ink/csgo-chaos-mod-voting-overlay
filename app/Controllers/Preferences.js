@@ -3,6 +3,8 @@ const { ipcMain, ipcRenderer, safeStorage, app } = require("electron");
 const ElectronPreferences = require("electron-preferences");
 const path = require("path");
 
+const isDev = !app.isPackaged;
+
 _this.preferences = new ElectronPreferences({
     dataStore: path.resolve(app.getPath("userData"), "preferences.json"),
     defaults: {
@@ -13,6 +15,7 @@ _this.preferences = new ElectronPreferences({
             autoEnableConvar: true
         },
         voting: {
+            debugMultipleVotes: false,
             highlightedEffectColor: "#b14299",
             votingStyle: "proportional",
             alwaysOnTop: true,
@@ -147,6 +150,17 @@ _this.preferences = new ElectronPreferences({
                                 type: "button",
                                 buttonLabel: "Reset Defaults",
                                 help: "Note: Re-open the preferences window to update.",
+                            },
+                            {
+                                label: "DEBUG: Allow multiple votes from the same user",
+                                key: "debugMultipleVotes",
+                                type: "radio",
+                                options: [
+                                    { label: "Yes", value: true },
+                                    { label: "No", value: false },
+                                ],
+                                help: "Note: Defaults to no when packaged. Selecting yes will mean the same user can vote for the same effect multiple times before new effects are generated, completely disregarding any cooldown (testing purposes only).",
+                                hideFunction: () => !isDev
                             },
                         ],
                     },
