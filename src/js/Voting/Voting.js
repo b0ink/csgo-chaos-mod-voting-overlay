@@ -144,7 +144,7 @@ export default function Voting(props) {
             {/* {timeoutWarning && <div id="timeout-warning">This window will close automatically when Chaos is disabled. {`(${60 - timeouts})`}</div>} */}
             {!isConnected && (
                 <div id="twitch-disabled">
-                    <p>You have lost connection to the server.<br/>Trying to reconnecting automatically...</p>
+                    <p>You have lost connection to the server.<br/>Trying to reconnect automatically...</p>
                 </div>
             )}
             {votingEnabled !== true && isConnected && (
