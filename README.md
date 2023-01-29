@@ -27,7 +27,11 @@ A settings icon is present in the bottom right corner of the connection setup wi
 <p align="center">
 	<img src="https://csgochaosmod.com/gallery/twitch-overlay/App_1.PNG" 	width="250" title="Twitch Setup">
 	<img src="https://csgochaosmod.com/gallery/twitch-overlay/App_2.PNG" 	width="250" title="YouTube Setup">
-	<img src="https://csgochaosmod.com/gallery/twitch-overlay/Voting_3.PNG" width="250" title="Voting Panel">
+</p>
+<p align="center">
+	<img src="https://csgochaosmod.com/gallery/twitch-overlay/Voting_Idle.png?v=1" 	width="250" title="Twitch Setup">
+	<img src="https://csgochaosmod.com/gallery/twitch-overlay/Voting_Votes.png?v=1" 	width="250" title="YouTube Setup">
+	<img src="https://csgochaosmod.com/gallery/twitch-overlay/Voting_Highlight.png" width="250" title="Voting Panel">
 </p>
 
 ### OBS
