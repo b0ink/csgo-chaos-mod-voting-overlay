@@ -13,9 +13,9 @@ export default function Voting(props) {
     const [totalVotes, setTotalVotes] = useState(0);
     const [canVote, setCanVote] = useState(true);
     const [isRandomEffect, setIsRandomEffect] = useState(false);
+    const [IsProportionalVoting, setIsProportionalVoting] = useState(false);
 
     const [isConnected, setConnected] = useState(false);
-
     useEffect(() => {
         const root = document.querySelector(":root");
         window.electron.PreferencesAPI.GetValue("voting.highlightedEffectColor")
@@ -39,6 +39,10 @@ export default function Voting(props) {
             .then((data) => {
                 root.style.setProperty("--effecttextcolor", data);
             });
+
+        window.electron.EffectsAPI.IsProportionalVoting().then((data) => {
+            setIsProportionalVoting(data);
+        });
 
         //TODO: test to see if the order of these matter - separated to prevent infinite renders
         setInterval(GetEffectList, 100);
@@ -124,6 +128,7 @@ export default function Voting(props) {
                     index={i + 1}
                     canVote={canVote}
                     isRandomEffect={isRandomEffect}
+                    IsProportionalVoting={IsProportionalVoting}
                 />
             );
         }
@@ -144,7 +149,11 @@ export default function Voting(props) {
             {/* {timeoutWarning && <div id="timeout-warning">This window will close automatically when Chaos is disabled. {`(${60 - timeouts})`}</div>} */}
             {!isConnected && (
                 <div id="twitch-disabled">
-                    <p>You have lost connection to the server.<br/>Trying to reconnect automatically...</p>
+                    <p>
+                        You have lost connection to the server.
+                        <br />
+                        Trying to reconnect automatically...
+                    </p>
                 </div>
             )}
             {votingEnabled !== true && isConnected && (

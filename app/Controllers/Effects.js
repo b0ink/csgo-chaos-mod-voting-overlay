@@ -84,10 +84,10 @@ const GetServerData = async () => {
             _this.VotingEnabled = data.twitchEnabled;
             _this.HideEffectList = data.hideEffectList;
 
-            if(Preferences.preferences.value('connection.autoEnableConvar') && !_this.VotingEnabled){
-                try{
+            if (Preferences.preferences.value("connection.autoEnableConvar") && !_this.VotingEnabled) {
+                try {
                     Rcon.RconServer.execute("sm_cvar sm_chaos_voting_enabled 1");
-                }catch(e){
+                } catch (e) {
                     console.log(e);
                 }
             }
@@ -205,6 +205,10 @@ ipcMain.handle("Effects_GetEffects", async (event, data) => {
 
 ipcMain.handle("Effects_IsVotingEnabled", async (event, data) => {
     return _this.VotingEnabled;
+});
+
+ipcMain.handle("Effects_IsProportionalVoting", async (event, data) => {
+    return _this.ProportionalVoting;
 });
 
 ipcMain.handle("Effects_ShouldHideEffectList", async (event, data) => {

@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld("electron", {
     EffectsAPI: {
         GetEffects: () => ipcRenderer.invoke("Effects_GetEffects"),
         IsVotingEnabled: () => ipcRenderer.invoke("Effects_IsVotingEnabled"),
+        IsProportionalVoting: () => ipcRenderer.invoke("Effects_IsProportionalVoting"),
         ShouldHideEffectList: () => ipcRenderer.invoke("Effects_ShouldHideEffectList"),
         LastPlayedEffect: () => ipcRenderer.invoke("Effects_GetLastPlayedEffect"),
     },

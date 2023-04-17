@@ -8,6 +8,7 @@ export default function Effect(props) {
 
     /* Calculate percentage bar length */
     let percent = 0;
+
     if (props.effect) {
         percent = Math.floor((props.effect.votes / props.totalVotes) * 100);
         if (props.totalVotes == 0) {
@@ -55,7 +56,12 @@ export default function Effect(props) {
                     <div id="loadingbar" style={style}></div>
                     <span>{props.effect.index}.</span>
                     <span>{props.effect.name}</span>
-                    <span>{percent ? percent : "0"}%</span>
+
+                    {props.IsProportionalVoting ? (
+                        <span>{percent ? percent : "0"}%</span>
+                    ) : (
+                        <span>{props.effect && props.effect.votes ? props.effect.votes : "0"}</span>
+                    )}
                 </div>
             )}
         </div>
