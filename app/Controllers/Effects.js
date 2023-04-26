@@ -69,13 +69,14 @@ const GetServerData = async () => {
 
                     _this.NextEffectTime = data.newEffectTime;
 
-                    let interval = Math.floor(data.newEffectTime) - Math.floor(Date.now() / 1000);
+                    let interval = data.newEffectTimeRelative;
+                    
                     finalCheckTimer = setTimeout(GetServerData, interval * 1000);
-
+                    
                     disableVoteTimer = setTimeout(() => {
                         /* Disable votes 1 second before pulling new effect */
                         Chat.CanVote = false;
-                    }, interval * 1000 - 1000);
+                    }, (interval * 1000) - 1250);
 
                     _this.LastPlayedEffect = data.lastPlayedEffect;
                     _this.HighlightWinningEffect = true;
