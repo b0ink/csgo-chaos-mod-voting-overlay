@@ -20,7 +20,7 @@ _this.preferences = new ElectronPreferences({
             votingStyle: "proportional",
             alwaysOnTop: true,
             chromaKeyBackground: "#00ff00",
-            defaultEffectBar: "#323d41",
+            defaultEffectBar: "#6c838b",
             percentageBar: "#33587a",
             effectTextColor: "#fff",
         },

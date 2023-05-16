@@ -1,6 +1,7 @@
 :root{
     --chromakey: #00ff00;
-    --effectbar: #323d41;
+    /* --effectbar: #323d41; */
+    --effectbar: #6c838b;
     --percentageBar: #33587a;
     --effecttextcolor: #fff;
 }
@@ -62,7 +63,7 @@
     /* background-color: #33587a; */
     background-color: var(--winning-effect-color);
     color: var(--effecttextcolor);
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     transition: all 500ms ease-in-out;
 }
@@ -114,7 +115,7 @@
 }
 
 .greyed-out {
-    background-color: #808080;
+    background-color: #808080!important;
     /* background-color: #49595f; */
     transition: all 500ms ease-in-out;
 }
