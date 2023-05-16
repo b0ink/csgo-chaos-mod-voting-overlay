@@ -74,7 +74,7 @@ const GetServerData = async () => {
 
                     let interval = data.newEffectTimeRelative - timeToPull; // milliseconds until effect is pulled, offset by the amount of time it took to get server data
                     
-                    finalCheckTimer = setTimeout(GetServerData, interval -= 200);
+                    finalCheckTimer = setTimeout(GetServerData, interval -= 500);
                     
                     disableVoteTimer = setTimeout(() => {
                         /* Disable votes 1 second before pulling new effect */
