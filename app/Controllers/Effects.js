@@ -42,8 +42,11 @@ const ResetVoting = () => {
 };
 
 const GetServerData = async () => {
+    let currentTime = Date.now();
     await Rcon.GetEffectData(GetWinningEffect())
         .then((data) => {
+            let timeToPull = Date.now() - currentTime;
+            // console.log(`it took ${timeToPull} ms to get server data`);
             data = ParseServerData(data);
             if (!data || data.lastPlayedEffect === null) {
                 ResetVoting();
@@ -69,14 +72,14 @@ const GetServerData = async () => {
 
                     _this.NextEffectTime = data.newEffectTime;
 
-                    let interval = data.newEffectTimeRelative;
+                    let interval = data.newEffectTimeRelative - timeToPull; // milliseconds until effect is pulled, offset by the amount of time it took to get server data
                     
-                    finalCheckTimer = setTimeout(GetServerData, interval * 1000);
+                    finalCheckTimer = setTimeout(GetServerData, interval -= 200);
                     
                     disableVoteTimer = setTimeout(() => {
                         /* Disable votes 1 second before pulling new effect */
                         Chat.CanVote = false;
-                    }, (interval * 1000) - 1250);
+                    }, interval - 1250);
 
                     _this.LastPlayedEffect = data.lastPlayedEffect;
                     _this.HighlightWinningEffect = true;
