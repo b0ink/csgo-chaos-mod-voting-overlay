@@ -61,7 +61,7 @@
 
 .effect.highlight {
     /* background-color: #33587a; */
-    background-color: var(--winning-effect-color);
+    background-color: var(--winning-effect-color)!important;
     color: var(--effecttextcolor);
     font-size: 15px;
     font-weight: 700;
